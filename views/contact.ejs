@@ -1,0 +1,64 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<header>
+    <%- include('partials/header')%>
+</header>
+
+<body>
+    <div class="contact col-md-12">
+
+    </div>
+    <br>
+    <div class="container">
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-md-6 content-left">
+                <h3 style="color: #ffcc30">Liên hệ</h3>
+                <li>45 Nguyễn Khắc Nhu, Trần Hưng Đạo,Quận 1,Thành phố Hồ Chí Minh</li>
+                <li>
+                    <strong>Phone:(+84)1648795400</strong>
+                </li>
+                <Li>
+                    <strong>Email:chauly.sep.2018@gmail.com</strong>
+                </Li>
+                <li>Mọi thông tin liên lạc xin vui lòng gửi email hoặc liên hệ đến số điện thoại chúng tôi sẽ liên hệ và trả
+                    lời với bạn trong thời gian sớm nhất. Xin chân thành cảm ơn !!!
+                </li>
+                <br>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.630213204862!2d106.69112781462086!3d10.762956062385703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ae2cc46f%3A0xbbc7484836e09cf7!2zNDUgTmd1eeG7hW4gS2jhuq9jIE5odSwgQ8O0IEdpYW5nLCBRdeG6rW4gMSwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1523877160853"
+                    width=100% height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+            <div class="col-md-6 content-right">
+                <h3 style="color: #ffcc30">Liên hệ với chúng tôi</h3>
+                <form action="http://localhost:3000/mail" method="POST">
+                    <label for="name">Họ và tên</label>
+                    <input class="form-control" type="text" id="idname" name="yourname" placeholder="Your name....">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="text" id="idemail" name="youremail" placeholder="Your email...">
+                    <label for="phone">Number phone</label>
+                    <input class="form-control" type="text" id="idphone" name="numphone" placeholder="Number phone....">
+                    <label for="message">Nội dung</label>
+                    <textarea class="form-control" name="message" id="idmessage" cols="30" rows="10" placeholder="Message..."></textarea>
+                    <!-- <input class="form-control" type="text" id="idmessage" name="contentmessage" placeholder="Message...."> -->
+                    <input class="btn btn-default" type="submit" value="Cancel">
+                    <input class="btn btn-default" type="submit" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</body>
+<footer>
+    <%- include('partials/footer')%>
+</footer>
+
+</html>

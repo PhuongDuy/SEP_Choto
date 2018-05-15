@@ -1,0 +1,74 @@
+<%- include('partials/header1')%>
+    <!-- page content -->
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Detail Seller
+                        <small>
+                            <a href="/approveuser">Back to list</a>
+                        </small>
+                    </h3>
+                </div>
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="container">
+                <nav class="navbar navbar-default" role="navigation" style="border: 1px solid;margin : 0;background-color: #2A3F54">
+                    <div class="container-fluid">
+                        <p style="margin-bottom: 0;color: white;font-size: 20px">Thông tin Seller</p>
+                    </div>
+                </nav>
+                <div style="border: 1px solid;">
+                    <div style="padding: 10px;">
+                        <div class="input-group">
+                            <span class="input-group-addon">ID :</span>
+                            <input type="text" class="form-control" name="ID" value="<%= seller.ID%>">
+
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Full Name :</span>
+                            <input type="text" class="form-control" name="ProductName" value="<%= seller.FullName%>">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Email :</span>
+                            <input type="text" class="form-control" name="Price" value="<%= seller.Email%>">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Phone :</span>
+                            <input type="text" class="form-control" name="Price" value="<%= seller.Phone%>">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Address :</span>
+                            <input type="text" class="form-control" name="Price" value="<%= seller.Address%>">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Status :</span>
+                            <input type="text" class="form-control" name="Price" value="<%= asa%>">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Create At :</span>
+                            <input type="text" class="form-control" name="Price" value="<%= seller.Created_at%>">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <a href="/approveuser" data-id="<%= seller._id %>" type="button" class="btn btn-danger No_Approve">No Approve</a>
+                <a href="#" data-id="<%= seller._id %>" data-status="US01" type="button" class="btn btn-success Approve">Approve</a>
+            </div>
+        </div>
+    </div>
+    <!-- /page content -->
+<%- include('partials/footer1')%>

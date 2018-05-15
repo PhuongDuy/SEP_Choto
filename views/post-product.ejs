@@ -1,0 +1,112 @@
+
+<html class="no-js" lang="">
+
+<header>
+    <%- include('partials/header')%>
+</header>
+
+<body>
+    <div class="contact col-md-12">
+        <h2 class="container">Đăng tin</h2>
+    </div>
+    <br>
+    <div class="container">
+        <br>
+        <br>
+
+        <div class="container-content">
+            <div class="container">
+                <form action="/insert" method="POST">
+                    <div class="caption">Tiêu đề tin</div>
+                    <small>Tiêu đề ngắn gọn mang đầy đủ thông tin làm tỉ lệ mua hàng cao hơn,Có ít nhất 20 ký tự</small>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Tiêu đề</span>
+                        <input type="text" id="title" name="title" class="form-control" placeholder="Nội dung" aria-describedby="basic-addon1">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="caption">
+                                Danh mục
+                            </div>
+                            <div class="btn-group">
+                                    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+                                      Danh mục <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li>1</li>
+                                      <li>1</li>
+                                      <li>1</li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="caption">
+                        Giá tiền
+                    </div>
+                    <small>Chỉ nhập số không khoảng trắng</small>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Giá</span>
+                        <input type="text" id="price" name="price" class="form-control" placeholder="Bỏ trống nếu muốn người mua liên hệ riêng để biết giá"
+                            aria-describedby="basic-addon1">
+                    </div>
+                    <hr>
+                    <div class="caption">
+                        Tải ảnh lên
+                    </div>
+                    <div class="waring-image">
+                        <div class="caption-waring">
+                            Đối với tin rao bán
+                        </div>
+                        <div class="content-waring">
+                            <li>Hình ảnh đẹp sẽ giúp tin đăng của bạn thu hút người mua</li>
+                            <li>Không sử dụng ảnh có (hoặc in chìm) số điện thoại, địa chỉ website hay các thông tin liên hệ
+                                khác
+                            </li>
+                            <li>Không sử dụng ảnh tải về trên mạng</li>
+                            <li>Tin đăng của bạn có thể bị từ chối nếu không đáp ứng đủ các tiêu chuẩn về hình ảnh</li>
+                        </div>
+                        <!-- upload Image -->
+                        <input class="form-control" type="file" name="file">
+                        <!-- /input-group image-preview [TO HERE]-->
+                        <hr>
+                        <div class="caption">Nội dung tin</div>
+                        <div class="content-waring">
+                            Đối với tin rao bán, vui lòng không nhập thông tin liên hệ vào nội dung tin, nội dung mô tả chi tiết tin đăng của bạn. Sẽ
+                            giúp bạn tiếp cận nhanh hơn khách hàng tiềm năng
+                        </div>
+                        <div class="text-area">
+                            <textarea id="description" name="description" rows="12"></textarea>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <input type="checkbox" aria-label="...">
+                                    <p>Tôi đồng ý với
+                                        <a href="#">[Điều khoản sử dụng của website]</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+
+                                <button type="button" class="btn btn-default">Nhập lại</button>
+                                <button type="submit" class="btn btn-default">Xác nhận</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</body>
+<footer>
+    <%- include('partials/footer')%>
+</footer>
+
+</html>

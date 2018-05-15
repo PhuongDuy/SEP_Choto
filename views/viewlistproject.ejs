@@ -1,0 +1,80 @@
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<header>
+  <%- include('partials/header')%>
+</header>
+
+<body>
+  <div class="contact">
+    <div class="container">
+      <div class="row nav-search col-md-10">
+        <div class="col-md-3 col-sm-6 col-xs-12 nav-search-left">
+            
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 nav-search-right">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <% data.forEach(function(item){%>
+      <div class="col-xs-6 col-md-3">
+        <div class="thumbnail" style="margin-top: 20px">
+          <!-- kích thước ảnh 171*180px -->
+          <a href="/viewdetail/<%= item._id%>">
+            <img src="../frontend/images/<%= item.Avatar%>" style="width: 360px;height: 200px;">
+          </a>
+          <div class="caption-a">
+            <h3><%=item.ProductName%></h3>
+            <p><%=item.Discription%></p>
+            <p style="color: #fb8004;font-size: 18px;display: block;font-weight: 600"><%= item.Price%>
+              <sup>đ</sup></p>
+            <p>
+              <a href="/viewdetail/<%= item._id%>" class="btn btn-primary" role="button">Xem chi tiết</a>
+          </div>
+        </div>
+      </div>
+      <%})%>
+    </div>
+    <!-- pagination -->
+    <nav aria-label="Page navigation" style="text-align: center">
+      <ul class="pagination">
+        <li>
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">1</a>
+        </li>
+        <li>
+          <a href="#">2</a>
+        </li>
+        <li>
+          <a href="#">3</a>
+        </li>
+        <li>
+          <a href="#">4</a>
+        </li>
+        <li>
+          <a href="#">5</a>
+        </li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</body>
+
+<footer>
+  <%- include('partials/footer')%>
+</footer>
+
+</html>
