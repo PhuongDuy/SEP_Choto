@@ -1,4 +1,4 @@
-<%- include('partials/header1')%>
+<%- include ./partials/header1 %>
     <!-- page content -->
     <div class="right_col" role="main">
         <div class="">
@@ -34,13 +34,12 @@
                 <div style="border: 1px solid;">
                     <div style="padding: 10px;">
                         <div class="input-group">
-                            <span class="input-group-addon">ID :</span>
-                            <input type="text" class="form-control" name="ID" value="<%= seller.ID%>">
-
+                            <span class="input-group-addon">Full Name :</span>
+                            <input type="text" class="form-control" name="ProductName" value="<%= seller.Fullname%>">
                         </div>
                         <div class="input-group">
-                            <span class="input-group-addon">Full Name :</span>
-                            <input type="text" class="form-control" name="ProductName" value="<%= seller.FullName%>">
+                            <span class="input-group-addon">User Name :</span>
+                            <input type="text" class="form-control" name="Username" value="<%= seller.Username%>">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">Email :</span>
@@ -71,4 +70,4 @@
         </div>
     </div>
     <!-- /page content -->
-<%- include('partials/footer1')%>
+<%- include ./partials/footer1%>

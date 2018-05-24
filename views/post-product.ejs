@@ -1,9 +1,14 @@
-
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
 <html class="no-js" lang="">
+<!--<![endif]-->
 
-<header>
-    <%- include('partials/header')%>
-</header>
+
+    <%- include ./partials/header %>
+
 
 <body>
     <div class="contact col-md-12">
@@ -15,8 +20,8 @@
         <br>
 
         <div class="container-content">
-            <div class="container">
-                <form action="/insert" method="POST">
+            <div class="row">
+                <form action="/post-product" method="POST">
                     <div class="caption">Tiêu đề tin</div>
                     <small>Tiêu đề ngắn gọn mang đầy đủ thông tin làm tỉ lệ mua hàng cao hơn,Có ít nhất 20 ký tự</small>
                     <div class="input-group">
@@ -27,18 +32,24 @@
                     <div class="row">
                         <div class="col-md-6 col-xs-6">
                             <div class="caption">
-                                Danh mục
+                                Danh mục sản phẩm
                             </div>
-                            <div class="btn-group">
-                                    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
-                                      Danh mục <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                      <li>1</li>
-                                      <li>1</li>
-                                      <li>1</li>
-                                    </ul>
+                            <select class="form-control" id="Product_Type" name="Product_Type">
+                                <optgroup label="Danh mục">
+                                    <% for(let i in loai) {%>
+                                    <option value="<%= loai[i].ID %>"><%= loai[i].TypeName %></option>
+                                    <%}%>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="caption">
+                                Avatar
                             </div>
+                            <div class="content-waring">
+                                <li>Hình ảnh đẹp sẽ giúp tin đăng của bạn thu hút người mua</li>
+                            </div>
+                            <input class="form-control" type="file" name="fileavatar">
                         </div>
                     </div>
                     <hr>
@@ -68,8 +79,11 @@
                             <li>Tin đăng của bạn có thể bị từ chối nếu không đáp ứng đủ các tiêu chuẩn về hình ảnh</li>
                         </div>
                         <!-- upload Image -->
-                        <input class="form-control" type="file" name="file">
+                        
+                        <input class="form-control" type="file" name="fileimage">
+                        
                         <!-- /input-group image-preview [TO HERE]-->
+                        
                         <hr>
                         <div class="caption">Nội dung tin</div>
                         <div class="content-waring">
@@ -97,7 +111,6 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -105,8 +118,8 @@
     <br>
 
 </body>
-<footer>
-    <%- include('partials/footer')%>
-</footer>
+
+    <%- include ./partials/footer %>
+
 
 </html>

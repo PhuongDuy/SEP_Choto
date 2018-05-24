@@ -1,4 +1,4 @@
-<%- include('partials/header1')%>
+<%- include ./partials/header1 %>
   <!-- page content -->
   <div class="right_col" role="main">
     <div class="">
@@ -68,7 +68,7 @@
                   <% listuser.forEach(function(users){%>
                     <tr>
                       <th>
-                        <%=users.FullName%>
+                        <%=users.Username%>
                       </th>
                       <th>
                         <%=users.Email%>
@@ -98,4 +98,4 @@
   </div>
   <!-- /page content -->
 
-<%- include('partials/footer1')%>
+<%- include ./partials/footer1 %>

@@ -1,30 +1,26 @@
 'use strict'
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt-nodejs');
 
 var UserSchema = new mongoose.Schema({
-    ID: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    FullName: {
-        type: String,
+    Fullname: {
+        type: String
     },
     Email: {
         type: String,
+        trim: true
     },
     Password: {
         type: String,
+        trim: true
     },
     Phone: {
-        type: String
+        type: String,
+        trim: true
     },
     Address: {
         type: String
-    },
-    Birthday: {
-        type: Date
     },
     Role: {
         type: Number,
@@ -41,11 +37,26 @@ var UserSchema = new mongoose.Schema({
     },
     Status_ID: {
         type: String,
-        enum: ["USO1","US02"],
         default: "US02"
+    },
+    Username: {
+        type: String,
+        trim: true
     }
 });
 
 
+UserSchema.methods.encryptPassword = function(password,err,done) {
+    if(err) { return done("Lỗi mã hoá mật khẩu" + err); }
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+  };
+  
+UserSchema.methods.validPassword = function(Password) {
+      if(this.Password != null) {
+        return bcrypt.compareSync(Password, this.Password);
+      } else {
+          return false;
+      }
+  };
 
 module.exports = mongoose.model('User', UserSchema); 

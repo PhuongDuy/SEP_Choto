@@ -1,4 +1,4 @@
-<%- include('partials/header1')%>
+<%- include ./partials/header1 %>
   <!-- page content -->
   <div class="right_col" role="main">
     <div class="">
@@ -75,13 +75,13 @@
                         <%= posts.ProductName%>
                       </th>
                       <th>
-                        <%= tpy %>
+                        <%= posts.PostStatus_ID %>
                       </th>
                       <th>
-                        <%= posts.Price%>
+                        <%= posts.ProductType_ID%>
                       </th>
                       <th>
-                        <%= stut%>
+                        <%= posts.PostStatus_ID%>
                       </th>
                       <th>
                         <img style="width: 50px;" src="../frontend/images/<%= posts.Avatar%>">
@@ -105,4 +105,4 @@
   </div>
   <!-- /page content -->
 
-  <%- include('partials/footer1')%>
+  <%- include ./partials/footer1 %>

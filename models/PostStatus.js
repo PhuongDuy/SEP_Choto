@@ -4,8 +4,6 @@ var Schema = mongoose.Schema;
 var PostStatusSchema = new mongoose.Schema({
     ID: {
         type: String,
-        unique: true,
-        required: true
     },
     StatusName: {
         type: String,
