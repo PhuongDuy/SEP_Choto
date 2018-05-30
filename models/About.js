@@ -2,9 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AboutSchema = new mongoose.Schema({
-    ID: {
-        type: String,
-    },
     Title: {
         type: String,
     },

@@ -2,47 +2,55 @@
 <!--<![endif]-->
 
 
-    <%- include ./partials/header%>
+<%- include ./partials/header%>
 
 
-<body>
-    <div class="container">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Loại sản phẩm</th>
-                    <th>Công cụ</th>
-                    <th>Chỉnh sửa</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% listpost.forEach(function(posts){%>
+    <body>
+        <div class="contact col-md-12">
+        </div>
+        <br>
+        <div class="container">
+            <h2>Danh sách các bài đăng</h2>
+            <hr>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            <%= posts.ProductName%>
-                        </td>
-                        <td>
-                            <%= posts.Price%>
-                        </td>
-                        <td>
-                            <%= tpy %>
-                        </td>
-                        <td>
-                            <a href="#" id="btn1" data-id="<%= posts._id%>" data-status="PS01" type="button" class="btn btn-success Hienthi">Hiển thị</a>
-                            <a href="#" id="btn2" data-id="<%= posts._id%>" data-status="PS02" type="button" class="btn btn-danger An">Ẩn</a>
-                        </td>
-                        <td>
-                            <a href="/updateproduct/<%= posts._id%>">Chỉnh sửa</a>
-                        </td>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Loại sản phẩm</th>
+                        <th>Trạng thái</th>
+                        <th>Chỉnh sửa</th>
                     </tr>
-                    <%});%>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <% listpost.some(function(posts,i,_arr){%>
+                        <tr>
+                            <td>
+                                <%= posts.ProductName%>
+                            </td>
+                            <td>
+                                <%= posts.Price%>
+                            </td>
+                            <td>
+                                <%= tpy[i] %>
+                            </td>
+                            <td>
+                                <% if(posts.PostStatus_ID === "PS01") {%>
+                                <a  id="btn1" data-id="<%= posts._id%>" data-status="PS01" type="button" class="btn btn-success Hienthi">Hiển thị</a>
+                                <% } else {%>
+                                <a id="btn2" data-id="<%= posts._id%>" data-status="PS02" type="button" class="btn btn-danger An">Ẩn</a>
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="/updateproduct/<%= posts._id%>">Chỉnh sửa</a>
+                            </td>
+                        </tr>
+                        <%});%>
+                </tbody>
+            </table>
+        </div>
 
-</body>
+    </body>
 
 
     <%- include ./partials/footer %>

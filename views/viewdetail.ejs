@@ -22,11 +22,8 @@
               </ol>
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
-                <div class="item active">
-                  <img src="../frontend/images/<%= lipost.Avatar%>" style="widows: 360px;height: 300px;">
-                </div>
                 <% img.forEach(function(item){%>
-                  <div class="item">
+                  <div class="item active">
                     <img src="../frontend/images/<%= item%>" style="widows: 360px;height: 300px;">
                   </div>
                   <%})%>
@@ -47,24 +44,20 @@
               <form action="sendmailseller" method="POST">
                 <label>Liên hệ</label>
                 <p>
-                  <%= seller.FullName%>
+                  <%= seller.Fullname%>
                 </p>
-                <p>Địa chỉ :
-                  <%= seller.Address%>
+                <p>Địa chỉ : <%= seller.Address%>
                 </p>
-                <p>Số điện thoại:
-                  <i style="color: #e25604">
-                    <%= seller.Phone%>
-                  </i>
+                <p>Số điện thoại:<i style="color: #e25604"><%= seller.Phone%></i>
                 </p>
-                <p>Email:</p> <p name="mailseller"><%= seller.Email%></p>
+                <p >Email: <%= seller.Email%></p>
                   
                 <br>
                 <div class="sent-seller">
                   <label for="name">Họ và tên</label>
                   <input class="form-control" type="text" id="idname" name="yourname" placeholder="Your name....">
-                  <label for="email">Email</label>
-                  <input class="form-control" type="text" id="idemail" name="youremail" placeholder="Your email...">
+                  <!-- <label for="email">Email</label>
+                  <input class="form-control" type="text" id="idemail" name="youremail" value="<%= seller.Email%>" placeholder="Your email..."> -->
                   <label for="phone">Number phone</label>
                   <input class="form-control" type="text" id="idphone" name="numphone" placeholder="Number phone....">
                   <label for="message">Nội dung</label>
@@ -84,8 +77,7 @@
                 <%= lipost.Price%>
                   <sup>đ</sup>
               </h2>
-              <p>Đăng ngày:
-                <i>...</i>
+              <p>Đăng ngày: <%= lipost.Create_at.toLocaleDateString()%>
               </p>
               <strong>
                 <p>

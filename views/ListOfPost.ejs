@@ -69,7 +69,7 @@
                   <% listpost.forEach(function(posts){%>
                     <tr>
                       <th>
-                        <%= posts.Create_at%>
+                        <%= posts.Create_at.toLocaleDateString()%>
                       </th>
                       <th>
                         <%= posts.ProductName%>

@@ -9,19 +9,17 @@
 
     <%- include ./partials/header %>
 
-
+    
 <body>
     <div class="contact col-md-12">
-        <h2 class="container">Đăng tin</h2>
     </div>
     <br>
-    <div class="container">
-        <br>
-        <br>
-
+    <div class="container" style="width: 900px;">
+        <h2>Đăng tin</h2>
+        <hr>
         <div class="container-content">
             <div class="row">
-                <form action="/post-product" method="POST">
+                <form action="/post-product" method="POST" enctype="multipart/form-data" >
                     <div class="caption">Tiêu đề tin</div>
                     <small>Tiêu đề ngắn gọn mang đầy đủ thông tin làm tỉ lệ mua hàng cao hơn,Có ít nhất 20 ký tự</small>
                     <div class="input-group">
@@ -42,15 +40,6 @@
                                 </optgroup>
                             </select>
                         </div>
-                        <div class="col-md-6 col-xs-6">
-                            <div class="caption">
-                                Avatar
-                            </div>
-                            <div class="content-waring">
-                                <li>Hình ảnh đẹp sẽ giúp tin đăng của bạn thu hút người mua</li>
-                            </div>
-                            <input class="form-control" type="file" name="fileavatar">
-                        </div>
                     </div>
                     <hr>
                     <div class="caption">
@@ -61,6 +50,7 @@
                         <span class="input-group-addon" id="basic-addon1">Giá</span>
                         <input type="text" id="price" name="price" class="form-control" placeholder="Bỏ trống nếu muốn người mua liên hệ riêng để biết giá"
                             aria-describedby="basic-addon1">
+                        <span class="input-group-addon">VNĐ</span>
                     </div>
                     <hr>
                     <div class="caption">
@@ -77,11 +67,17 @@
                             </li>
                             <li>Không sử dụng ảnh tải về trên mạng</li>
                             <li>Tin đăng của bạn có thể bị từ chối nếu không đáp ứng đủ các tiêu chuẩn về hình ảnh</li>
+                            <li>*Lưu ý: bạn được phép đăng tối đa 8 tấm hình</li>
+                            <li>Bấm giữ phím Ctrl và chọn nhiều ảnh</li>
                         </div>
                         <!-- upload Image -->
-                        
-                        <input class="form-control" type="file" name="fileimage">
-                        
+                        <input class="form-control" id="files" type="file" name="files" multiple="multiple">
+
+                        <script type="text/javascript">
+                            jQuery(function ($) {
+                                $("#files").shieldUpload();
+                            });
+                        </script>
                         <!-- /input-group image-preview [TO HERE]-->
                         
                         <hr>

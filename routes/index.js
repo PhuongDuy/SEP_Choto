@@ -13,6 +13,7 @@ var nodemailer = require('nodemailer'),
   ProductType = require('../models/ProductType'),
   UserStatus = require('../models/UserStatus'),
   multer = require('multer'),
+  path = require('path'),
   mongoose = require('mongoose');
 var passport = require('passport');
 
@@ -20,9 +21,11 @@ var passport = require('passport');
 
 //luuhinh
 var storage = multer.diskStorage({
-  destination: 'public/frontend/images',
-  filename: function (req, file, cd) {
-    cd(null, file.originalname);
+  destination: function (req, file, cb) {
+    cb(null, './public/frontend/images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   }
 });
 
@@ -47,12 +50,15 @@ function checkFileType(file, cb) {
 router.get('/', function (req, res, next) {
   ProductType.find(function (err, docs) {
     if (err) throw console.log(err);
-    res.render('index', { ty: docs, user: req.user});
+    res.render('index', { ty: docs, user: req.user });
   });
 });
 
 router.get('/about', function (req, res, next) {
-  res.render('about', { user: req.user });
+  About.find(function (err, docs) {
+    if (err) throw console.log(err);
+    res.render('about', { user: req.user, about: docs });
+  })
 });
 
 
@@ -60,8 +66,16 @@ router.get('/viewlistproject/:id', function (req, res, next) {
   ProductType.find(function (err, dos) {
     ProductType.findById(req.params.id, function (err, type) {
       if (err) throw console.log(err);
-      Post.find({ ProductType_ID: type.ID }, function (err, docs) {
-        console.log(docs);
+      Post.find({$and: [{ ProductType_ID: type.ID }, { PostStatus_ID: "PS01" }]}, function (err, docs) {
+        docs.map(r => {
+          let position = r.Image.indexOf(',');
+          if (r.Image.length !== position) {
+            r['Image'] = r.Image.split(",", 1);
+          } else {
+            r['Image'] = r.Image;
+          }
+          return r;
+        });
         if (err) throw console.log(err);
         res.render('viewlistproject', { data: docs, ty: dos, user: req.user })
       });
@@ -77,7 +91,7 @@ router.get('/contact', function (req, res, next) {
 
 
 router.get('/login', function (req, res, next) {
-  res.render('login');
+  res.render('login', { user: req.user });
 });
 
 router.post('/login', passport.authenticate('login', {
@@ -89,10 +103,10 @@ router.post('/login', passport.authenticate('login', {
     req.session.oldUrl = null;
     res.redirect(currentUrl);
   } else
-    if(req.user.Status_ID == 'US01') {
-    res.redirect('/');
+    if (req.user.Status_ID == 'US01') {
+      res.redirect('/postofuser');
     }
-    res.redirect('/messapprove');
+  res.redirect('/messapprove');
 });
 
 router.get('/mail', function (req, res, next) {
@@ -116,22 +130,20 @@ router.get('/post-product', section, function (req, res, next) {
   });
 });
 
-router.post('/post-product', section, upload.single("fileavatar"), function (req, res, next) {
+router.post('/post-product', section, upload.array("files", 8), function (req, res, next) {
+  let img = req.files.map(r => r.filename);
   var add_post = new Post();
   add_post.ProductType_ID = req.body.Product_Type;
   add_post.ProductName = req.body.title;
   add_post.User_ID = req.user._id;
-  add_post.Avatar = req.body.fileavatar;
   add_post.Price = req.body.price;
-  add_post.Image = req.body.fileimage;
+  add_post.Image = img.toString();
   add_post.Discription = req.body.description;
-  console.log(add_post);
   add_post.save(function (err) {
-    console.log(err);
     if (err) {
       return new Error(err + "");
     } else {
-      res.redirect('/');
+      return res.redirect('/');
     }
   });
 });
@@ -185,7 +197,7 @@ router.post('/sendmailseller', urlencodedParser, function (req, res) {
 
   var mailOptions = {
     from: '"Hỗ trợ chợ tốt Văn Lang"<ppcrentalteam04@gmail.com>',
-    to: req.User.Email,
+    to: youremail,
     //pass:sep.team05.2018
     subject: 'Hỗ trợ khách hàng',
     text: 'Họ và tên: ' + yourname + ' Địa chỉ email: ' + youremail + ' Số điện thoại: ' + numphone + ' Nội dung:' + message
@@ -202,22 +214,71 @@ router.post('/sendmailseller', urlencodedParser, function (req, res) {
 });
 
 router.get('/postofuser', section, function (req, res, next) {
-  Post.find(function (err, docs) {
+  let mang = [];
+  let count = 0;
+  Post.find({ User_ID: req.user._id }, async function (err, docs) {
+  for(let i in docs){
+    await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+      count++;      
+      if (err) throw console.log(err); 
+      await mang.push(result.TypeName);
+      if(count === docs.length) {
+        res.render('postofuser', { listpost: docs, tpy: mang, user: req.user });
+      }   
+    });
+  } 
+  });
+});
+
+
+router.get('/updateproduct/:id', section, function (req, res, next) {
+  Post.findById(req.params.id,async function (err, docs) {
+    var str = docs.Image.split(',');
     if (err) throw console.log(err);
-    docs.forEach(element => {
-      ProductType.findOne({ ID: element.ProductType_ID }, function (err, result) {
+    var loai = [];
+    var status = [];
+    await ProductType.find(async function (err, tr) {
+      if (err) throw console.log(err);
+      for (let index in tr) {
+        loai.push(tr[index]);
+      }
+      await PostStatus.find(async function(err,sta){
         if (err) throw console.log(err);
-        res.render('postofuser', { listpost: docs, tpy: result.TypeName, user: req.user });
-      });
+        for (let ind in sta) {
+          status.push(sta[ind]);
+      }
+      res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai,status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+    });
     });
   });
 });
 
-router.get('/updateproduct', section, function (req, res) {
-  Post.findById(req.params.id, function (err, docs) {
-    var str = docs.Image.split(',');
-    if (err) throw console.log(err);
-    res.render('updateproduct', { lipost: docs, img: str, user: req.user });
+router.post('/updateproduct/:id', section, upload.array("files", 8), function (req, res, next) {
+  let img = req.files.map(r => r.filename);
+  var edit = {};
+  if (img.length === 0){
+    edit.ProductType_ID = req.body.ProductType_ID;
+    edit.ProductName = req.body.ProductName;
+    edit.Price = req.body.Price;
+    edit.Discription = req.body.Discription;
+    edit.PostStatus_ID = req.body.PostStatus_ID;
+    console.log(edit);
+  }else {
+    edit.ProductType_ID = req.body.ProductType_ID;
+    edit.ProductName = req.body.ProductName;
+    edit.Price = req.body.Price;
+    edit.Image = img.toString();
+    edit.Discription = req.body.Discription; 
+    edit.PostStatus_ID = req.body.PostStatus_ID;     
+    console.log(edit);
+  }
+  var sp_id = { _id: req.params.id };
+  Post.update(sp_id, edit, function(err){
+    if(err){
+      return console.log(err);
+    } else {
+      res.redirect('/postofuser');
+    }
   });
 });
 
@@ -254,51 +315,44 @@ router.post('/mail', urlencodedParser, function (req, res) {
 });
 
 //backend
-router.get('/ListOfPost',sectionadmin, function (req, res) {
+router.get('/ListOfPost', sectionadmin, function (req, res) {
   Post.find(function (err, docs) {
     if (err) throw console.log(err);
-    res.render('ListOfPost', { listpost: docs,user: req.user });
+    res.render('ListOfPost', { listpost: docs, user: req.user });
   });
 });
 
-router.get('/ViewDetailOSP/:id',sectionadmin, function (req, res, next) {
+router.get('/ViewDetailOSP/:id', sectionadmin, function (req, res, next) {
   Post.findById(req.params.id, function (err, docs) {
     var str = docs.Image.split(',');
     if (err) throw console.log(err);
     User.findOne({ _id: docs.User_ID }, function (err, us) {
       if (err) throw console.log(err);
-      res.render('ViewDetailOSP', { lipost: docs, seller: us, img: str,user: req.user });
+      res.render('ViewDetailOSP', { lipost: docs, seller: us, img: str, user: req.user });
     });
   });
 });
 
-router.get("/ListOfUser",sectionadmin, function (req, res) {
+router.get("/ListOfUser", sectionadmin, function (req, res) {
   UserStatus.findOne({ ID: "US01" }, function (err, statu) {
     if (err) throw console.log(err);
     User.find({ Status_ID: statu.ID }, function (err, docs) {
       if (err) throw console.log(err);
-      res.render('ListOfUser', { listuser: docs, asa: statu.StatusName,user: req.user });
+      res.render('ListOfUser', { listuser: docs, asa: statu.StatusName, user: req.user });
     });
   });
 })
 
-router.get("/approveuser",sectionadmin, function (req, res) {
+router.get("/approveuser", sectionadmin, function (req, res) {
   UserStatus.findOne({ ID: "US02" }, function (err, statu) {
     if (err) throw console.log(err);
     User.find({ Status_ID: statu.ID }, function (err, docs) {
       if (err) throw console.log(err);
-      res.render('approveuser', { listuser: docs, asa: statu.StatusName,user: req.user });
+      res.render('approveuser', { listuser: docs, asa: statu.StatusName, user: req.user });
     });
   });
 });
 
-router.get("/updateproduct/:id",sectionadmin, function (req, res) {
-  Post.findById(req.params.id, function (err, docs) {
-    var str = docs.Image.split(',');
-    if (err) throw console.log(err);
-    res.render('updateproduct', { lipost: docs, img: str,user: req.user });
-  });
-});
 
 router.get('/login-admin', function (req, res, next) {
   res.render('login-admin');
@@ -313,13 +367,13 @@ router.post('/login-admin', passport.authenticate('login-admin', {
     req.session.oldUrl = null;
     res.redirect(currentUrl);
   } else
-    if(req.user.Role === 1) {
-    res.redirect('/ListOfUser');
+    if (req.user.Role === 1 && req.user.Status_ID == 'US01') {
+      res.redirect('/ListOfUser');
     }
-    res.redirect('/messapprove');
+  res.redirect('/messapprove');
 });
 
-router.put("/thay-doi-trang-thai/:id",sectionadmin, function (req, res, next) {
+router.put("/thay-doi-trang-thai/:id", sectionadmin, function (req, res, next) {
   let query = { _id: req.params.id };
   User.update(query, { Status_ID: req.body.valStatus }, function (err, result) {
     if (err) { return console.log('err'); }
@@ -327,7 +381,7 @@ router.put("/thay-doi-trang-thai/:id",sectionadmin, function (req, res, next) {
   });
 });
 
-router.put("/post-status-change/:id",sectionadmin, function (req, res, next) {
+router.put("/post-status-change/:id", sectionadmin, function (req, res, next) {
   let query = { _id: req.params.id };
   Post.update(query, { PostStatus_ID: req.body.valStatus }, function (err, result) {
     if (err) { return console.log('err'); }
@@ -335,22 +389,35 @@ router.put("/post-status-change/:id",sectionadmin, function (req, res, next) {
   });
 });
 
-router.get('/viewapproveuser/:id',sectionadmin, function (req, res, next) {
+router.get('/viewapproveuser/:id', sectionadmin, function (req, res, next) {
   UserStatus.findOne({ ID: "US02" }, function (err, statu) {
     if (err) throw console.log(err);
     User.findOne({ Status_ID: statu.ID }, function (err, docs) {
       if (err) throw console.log(err);
-      res.render('viewapproveuser', { seller: docs, asa: statu.StatusName,user: req.user });
+      res.render('viewapproveuser', { seller: docs, asa: statu.StatusName, user: req.user });
     });
   });
 });
+
+Post.find(function (err, post) {
+  ProductType.find({ ID: post.ProductType_ID }, function (err, type) {
+    let matrixRows = new Array(post.length);
+    console.log(matrixRows);
+  });
+});
+
+
+router.get('/thongke', sectionadmin, function (req, res) {
+  res.render('thongke', { user: req.user })
+});
+
 
 function section(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   req.session.oldUrl = req.originalUrl;
-  res.redirect('/login');
+  return res.redirect('/login');
 }
 
 function sectionadmin(req, res, next) {
@@ -358,16 +425,16 @@ function sectionadmin(req, res, next) {
     return next();
   }
   req.session.oldUrl = req.originalUrl;
-  res.redirect('/login-admin');
+  return res.redirect('/login-admin');
 }
 
 router.get('/logout', section, function (req, res, next) {
   req.logout();
-  res.redirect('/');
+  return res.redirect('/');
 });
 
 function isPay(req, res, next) {
-  if (req,user.Role === '0') {
+  if (req, user.Role === '0') {
     if (req.user.Status === 'US01') {
       return next();
     }

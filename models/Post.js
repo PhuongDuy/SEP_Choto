@@ -21,16 +21,12 @@ var PostSchema = new mongoose.Schema({
     Create_at: {
         type: Date,
         default: Date.now
-
     },
     PostStatus_ID: {
         type: String,
         default: "PS01"
     },
     Image: {
-        type: String
-    },
-    Avatar:{
         type: String
     }
 });
