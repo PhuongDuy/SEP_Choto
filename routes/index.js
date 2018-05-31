@@ -425,25 +425,6 @@ router.get('/viewapproveuser/:id', sectionadmin, function (req, res, next) {
   });
 });
 
-let mang = [];
-let count = 0;
-Post.find(function (err, docs) {
-  for (let i in docs) {
-    ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
-      count++;
-      if (err) throw console.log(err);
-      await mang.push(result.TypeName);
-      if (count === docs.length) {
-        let arr = {};
-        mang.forEach(async function (i) { arr[i] = (arr[i] || 0) + 1 });
-        console.log(mang)
-        console.log(arr);
-      }
-    });
-  }
-});
-
-
 router.get('/thongke', sectionadmin, function (req, res) {
   let mang = [];
   let count = 0;
