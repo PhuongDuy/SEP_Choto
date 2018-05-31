@@ -66,7 +66,7 @@ router.get('/viewlistproject/:id', function (req, res, next) {
   ProductType.find(function (err, dos) {
     ProductType.findById(req.params.id, function (err, type) {
       if (err) throw console.log(err);
-      Post.find({$and: [{ ProductType_ID: type.ID }, { PostStatus_ID: "PS01" }]}, function (err, docs) {
+      Post.find({ $and: [{ ProductType_ID: type.ID }, { PostStatus_ID: "PS01" }] }, function (err, docs) {
         docs.map(r => {
           let position = r.Image.indexOf(',');
           if (r.Image.length !== position) {
@@ -217,22 +217,22 @@ router.get('/postofuser', section, function (req, res, next) {
   let mang = [];
   let count = 0;
   Post.find({ User_ID: req.user._id }, async function (err, docs) {
-  for(let i in docs){
-    await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
-      count++;      
-      if (err) throw console.log(err); 
-      await mang.push(result.TypeName);
-      if(count === docs.length) {
-        res.render('postofuser', { listpost: docs, tpy: mang, user: req.user });
-      }   
-    });
-  } 
+    for (let i in docs) {
+      await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+        count++;
+        if (err) throw console.log(err);
+        await mang.push(result.TypeName);
+        if (count === docs.length) {
+          res.render('postofuser', { listpost: docs, tpy: mang, user: req.user });
+        }
+      });
+    }
   });
 });
 
 
 router.get('/updateproduct/:id', section, function (req, res, next) {
-  Post.findById(req.params.id,async function (err, docs) {
+  Post.findById(req.params.id, async function (err, docs) {
     var str = docs.Image.split(',');
     if (err) throw console.log(err);
     var loai = [];
@@ -242,13 +242,13 @@ router.get('/updateproduct/:id', section, function (req, res, next) {
       for (let index in tr) {
         loai.push(tr[index]);
       }
-      await PostStatus.find(async function(err,sta){
+      await PostStatus.find(async function (err, sta) {
         if (err) throw console.log(err);
         for (let ind in sta) {
           status.push(sta[ind]);
-      }
-      res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai,status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
-    });
+        }
+        res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+      });
     });
   });
 });
@@ -256,25 +256,25 @@ router.get('/updateproduct/:id', section, function (req, res, next) {
 router.post('/updateproduct/:id', section, upload.array("files", 8), function (req, res, next) {
   let img = req.files.map(r => r.filename);
   var edit = {};
-  if (img.length === 0){
+  if (img.length === 0) {
     edit.ProductType_ID = req.body.ProductType_ID;
     edit.ProductName = req.body.ProductName;
     edit.Price = req.body.Price;
     edit.Discription = req.body.Discription;
     edit.PostStatus_ID = req.body.PostStatus_ID;
     console.log(edit);
-  }else {
+  } else {
     edit.ProductType_ID = req.body.ProductType_ID;
     edit.ProductName = req.body.ProductName;
     edit.Price = req.body.Price;
     edit.Image = img.toString();
-    edit.Discription = req.body.Discription; 
-    edit.PostStatus_ID = req.body.PostStatus_ID;     
+    edit.Discription = req.body.Discription;
+    edit.PostStatus_ID = req.body.PostStatus_ID;
     console.log(edit);
   }
   var sp_id = { _id: req.params.id };
-  Post.update(sp_id, edit, function(err){
-    if(err){
+  Post.update(sp_id, edit, function (err) {
+    if (err) {
       return console.log(err);
     } else {
       res.redirect('/postofuser');
@@ -316,19 +316,45 @@ router.post('/mail', urlencodedParser, function (req, res) {
 
 //backend
 router.get('/ListOfPost', sectionadmin, function (req, res) {
+  let mang = [];
+  let count = 0;
   Post.find(function (err, docs) {
     if (err) throw console.log(err);
-    res.render('ListOfPost', { listpost: docs, user: req.user });
+    for (let i in docs) {
+      ProductType.findOne({ ID: docs[i].ProductType_ID }, function (err, result) {
+        count++;
+        if (err) throw console.log(err);
+        mang.push(result.TypeName);
+        if (count === docs.length) {
+          res.render('ListOfPost', { listpost: docs, tpy: mang, user: req.user });
+        }
+      });
+    }
   });
 });
+
 
 router.get('/ViewDetailOSP/:id', sectionadmin, function (req, res, next) {
   Post.findById(req.params.id, function (err, docs) {
     var str = docs.Image.split(',');
     if (err) throw console.log(err);
-    User.findOne({ _id: docs.User_ID }, function (err, us) {
+    User.findOne({ _id: docs.User_ID },async function (err, us) {
       if (err) throw console.log(err);
-      res.render('ViewDetailOSP', { lipost: docs, seller: us, img: str, user: req.user });
+      var loai = [];
+      var status = [];
+      await ProductType.find(async function (err, tr) {
+        if (err) throw console.log(err);
+        for (let index in tr) {
+          loai.push(tr[index]);
+        }
+        await PostStatus.find(async function (err, sta) {
+          if (err) throw console.log(err);
+          for (let ind in sta) {
+            status.push(sta[ind]);
+          }
+          res.render('ViewDetailOSP', { lipost: docs, seller: us, img: str, user: req.user, loai: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+        });
+      });
     });
   });
 });
@@ -399,16 +425,42 @@ router.get('/viewapproveuser/:id', sectionadmin, function (req, res, next) {
   });
 });
 
-Post.find(function (err, post) {
-  ProductType.find({ ID: post.ProductType_ID }, function (err, type) {
-    let matrixRows = new Array(post.length);
-    console.log(matrixRows);
-  });
+let mang = [];
+let count = 0;
+Post.find(function (err, docs) {
+  for (let i in docs) {
+    ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+      count++;
+      if (err) throw console.log(err);
+      await mang.push(result.TypeName);
+      if (count === docs.length) {
+        let arr = {};
+        mang.forEach(async function (i) { arr[i] = (arr[i] || 0) + 1 });
+        console.log(mang)
+        console.log(arr);
+      }
+    });
+  }
 });
 
 
 router.get('/thongke', sectionadmin, function (req, res) {
-  res.render('thongke', { user: req.user })
+  let mang = [];
+  let count = 0;
+  Post.find(function (err, docs) {
+    for (let i in docs) {
+      ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+        count++;
+        if (err) throw console.log(err);
+        await mang.push(result.TypeName);
+        if (count === docs.length) {
+          let arr = [];
+          mang.forEach(function (i) { arr[i] = (arr[i] || 0) + 1; });
+          res.render('thongke', { listpost: docs, user: req.user, tpy: arr })
+        }
+      });
+    }
+  });
 });
 
 

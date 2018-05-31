@@ -61,12 +61,11 @@
                     <th>Type</th>
                     <th>Price</th>
                     <th>Status</th>
-                    <th>Image</th>
                     <th>Tool</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% listpost.forEach(function(posts){%>
+                  <% listpost.forEach(function(posts,i,_arr){%>
                     <tr>
                       <th>
                         <%= posts.Create_at.toLocaleDateString()%>
@@ -75,16 +74,17 @@
                         <%= posts.ProductName%>
                       </th>
                       <th>
-                        <%= posts.PostStatus_ID %>
+                        <%= tpy[i] %>
                       </th>
                       <th>
-                        <%= posts.ProductType_ID%>
+                        <%= posts.Price%>
                       </th>
                       <th>
-                        <%= posts.PostStatus_ID%>
-                      </th>
-                      <th>
-                        <img style="width: 50px;" src="../frontend/images/<%= posts.Avatar%>">
+                          <% if(posts.PostStatus_ID === "PS01") {%>
+                            <a  id="btn1" data-id="<%= posts._id%>" data-status="PS01" type="button" class="btn btn-success Hienthi">Hiển thị</a>
+                          <% } else {%>
+                            <a id="btn2" data-id="<%= posts._id%>" data-status="PS02" type="button" class="btn btn-danger An">Ẩn</a>
+                          <% } %>
                       </th>
                       <th>
                         <a class="glyphicon glyphicon-eye-open" href="../ViewDetailOSP/<%= posts._id%>">Detail</a>
