@@ -1,9 +1,10 @@
 var ProductType = require("../models/ProductType"),
     mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/SEPK21T1');
+mongoose.connect('mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5');
 
 var producttype = [
     new ProductType({
+        ID: "PT01",
         TypeName: "Điện thoại & máy tính bảng",
         Status: "true",
         Name: "Mobile & Tablet",
@@ -12,6 +13,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT02",
         TypeName: "Máy tính",
         Status: "true",
         Name: "Laptop",
@@ -20,6 +22,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT03",
         TypeName: "Máy ảnh",
         Status: "true",
         Name: "Camera",
@@ -28,6 +31,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT04",
         TypeName: "Sách",
         Status: "true",
         Name: "Book",
@@ -36,6 +40,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT05",
         TypeName: "Tivi",
         Status: "true",
         Name: "Television",
@@ -43,6 +48,7 @@ var producttype = [
         Image: "7.jpg"
     }),
     new ProductType({
+        ID: "PT06",
         TypeName: "Xe máy",
         Status: "true",
         Name: "Moto Bike",
@@ -50,6 +56,7 @@ var producttype = [
         Image: "4.jpg"
     }),
     new ProductType({
+        ID: "PT07",
         TypeName: "Điện lạnh",
         Status: "true",
         Name: "Air Conditioner",
@@ -58,6 +65,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT08",
         TypeName: "Thực phẩm",
         Status: "true",
         Name: "Food & Vegetable",
@@ -66,6 +74,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT09",
         TypeName: "Thời trang",
         Status: "true",
         Name: "Fashion",
@@ -74,6 +83,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT10",
         TypeName: "Thiết bị âm thanh",
         Status: "true",
         Name: "Sound Devices",
@@ -82,6 +92,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT11",
         TypeName: "Mỹ Phẩm & Làm Đẹp",
         Status: "true",
         Name: "Cosmetic & Beauty",
@@ -90,6 +101,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT12",
         TypeName: "Phiếu giảm giá",
         Status: "true",
         Name: "Voucher",
@@ -98,6 +110,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT13",
         TypeName: "Đồ chơi trẻ em",
         Status: "true",
         Name: "Toy",
@@ -106,6 +119,7 @@ var producttype = [
 
     }),
     new ProductType({
+        ID: "PT14",
         TypeName: "Nội thất",
         Status: "true",
         Name: "Furniture",

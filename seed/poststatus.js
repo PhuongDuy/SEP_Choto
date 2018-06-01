@@ -1,16 +1,16 @@
 var PostStatus = require("../models/PostStatus"),
     mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/SEPK21T1');
+mongoose.connect('mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5');
 
 var poststatus = [
     new PostStatus ({
-        ID : "PSO1",
-        StatusName : "Đã duyệt",
+        ID : "PS01",
+        StatusName : "Hiển thị",
         Status : "true"
     }),
     new PostStatus ({
-        ID : "PSO2",
-        StatusName : "Chưa duyệt",
+        ID : "PS02",
+        StatusName : "Ẩn",
         Status : "true"
     })
 ]

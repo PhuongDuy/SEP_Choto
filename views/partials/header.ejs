@@ -78,17 +78,16 @@
           <li class="active">
             <a href="/">Trang chủ</a>
           </li>
-          <!-- <li class="dropdown">
+          <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               Sản phẩm
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-
+                <% sp.forEach(function(item){%>
+                  <li><a href="/viewlistproject/<%= item._id%>"><%= item.TypeName%></a></li>
+                <%})%>
             </ul>
-          </li> -->
-          <li>
-            <a href="#">Sản Phẩm</a>
           </li>
           <li>
             <a href="/about">Thông tin</a>

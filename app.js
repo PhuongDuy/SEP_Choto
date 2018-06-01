@@ -58,8 +58,7 @@ app.use('/users', usersRouter);
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect("mongodb://localhost:27017/SEPK21T1")
-// mongoose.connect("mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5")
+mongoose.connect("mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5")
     .then(() => console.log("Connect thanh cong"))
     .catch((err) => console.log("Connect that bai"));
 require('./config/passport');

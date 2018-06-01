@@ -50,15 +50,17 @@ function checkFileType(file, cb) {
 router.get('/', function (req, res, next) {
   ProductType.find(function (err, docs) {
     if (err) throw console.log(err);
-    res.render('index', { ty: docs, user: req.user });
+    res.render('index', { ty: docs, user: req.user, sp: docs });
   });
 });
 
 router.get('/about', function (req, res, next) {
-  About.find(function (err, docs) {
-    if (err) throw console.log(err);
-    res.render('about', { user: req.user, about: docs });
-  })
+  ProductType.find(function (err, sp) {
+    About.find(function (err, docs) {
+      if (err) throw console.log(err);
+      res.render('about', { user: req.user, about: docs, sp: sp });
+    })
+  });
 });
 
 
@@ -77,7 +79,7 @@ router.get('/viewlistproject/:id', function (req, res, next) {
           return r;
         });
         if (err) throw console.log(err);
-        res.render('viewlistproject', { data: docs, ty: dos, user: req.user })
+        res.render('viewlistproject', { data: docs, ty: dos, user: req.user, sp: dos })
       });
     });
   });
@@ -85,13 +87,17 @@ router.get('/viewlistproject/:id', function (req, res, next) {
 
 
 router.get('/contact', function (req, res, next) {
-  res.render('contact', { user: req.user });
+  ProductType.find(function (err, docs) {
+    res.render('contact', { user: req.user, sp: docs });
+  });
 });
 
 
 
 router.get('/login', function (req, res, next) {
-  res.render('login', { user: req.user });
+  ProductType.find(function (err, docs) {
+    res.render('login', { user: req.user, sp: docs });
+  });
 });
 
 router.post('/login', passport.authenticate('login', {
@@ -114,7 +120,9 @@ router.get('/mail', function (req, res, next) {
 });
 
 router.get('/messapprove', section, function (req, res, next) {
-  res.render('messapprove', { title: 'Chờ duyệt', user: req.user });
+  ProductType.find(function (err, docs) {
+    res.render('messapprove', { title: 'Chờ duyệt', user: req.user, sp: docs });
+  });
 });
 
 router.get('/post-product', section, function (req, res, next) {
@@ -125,7 +133,8 @@ router.get('/post-product', section, function (req, res, next) {
     }
     res.render('post-product', {
       loai: loai,
-      user: req.user
+      user: req.user,
+      sp: loai
     });
   });
 });
@@ -149,11 +158,14 @@ router.post('/post-product', section, upload.array("files", 8), function (req, r
 });
 
 router.get('/register', function (req, res) {
-  var messages = req.flash('err');
-  res.render('register', {
-    messages: messages,
-    hasError: messages.length > 0,
-    user: req.user
+  ProductType.find(function (err, docs) {
+    var messages = req.flash('err');
+    res.render('register', {
+      messages: messages,
+      hasError: messages.length > 0,
+      user: req.user,
+      sp: docs
+    });
   });
 });
 
@@ -171,12 +183,14 @@ router.post('/register', passport.authenticate('register', {
 });
 
 router.get('/viewdetail/:id', urlencodedParser, function (req, res) {
-  Post.findById(req.params.id, function (err, docs) {
-    var str = docs.Image.split(',');
-    if (err) throw console.log(err);
-    User.findOne({ _id: docs.User_ID }, function (err, us) {
+  ProductType.find(function (err, sp) {
+    Post.findById(req.params.id, function (err, docs) {
+      var str = docs.Image.split(',');
       if (err) throw console.log(err);
-      res.render('viewdetail', { lipost: docs, seller: us, img: str, user: req.user });
+      User.findOne({ _id: docs.User_ID }, function (err, us) {
+        if (err) throw console.log(err);
+        res.render('viewdetail', { lipost: docs, seller: us, img: str, user: req.user, sp: sp });
+      });
     });
   });
 });
@@ -216,17 +230,19 @@ router.post('/sendmailseller', urlencodedParser, function (req, res) {
 router.get('/postofuser', section, function (req, res, next) {
   let mang = [];
   let count = 0;
-  Post.find({ User_ID: req.user._id }, async function (err, docs) {
-    for (let i in docs) {
-      await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
-        count++;
-        if (err) throw console.log(err);
-        await mang.push(result.TypeName);
-        if (count === docs.length) {
-          res.render('postofuser', { listpost: docs, tpy: mang, user: req.user });
-        }
-      });
-    }
+  ProductType.find(function (err, sp) {
+    Post.find({ User_ID: req.user._id }, async function (err, docs) {
+      for (let i in docs) {
+        await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+          count++;
+          if (err) throw console.log(err);
+          await mang.push(result.TypeName);
+          if (count === docs.length) {
+            res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
+          }
+        });
+      }
+    });
   });
 });
 
@@ -247,7 +263,7 @@ router.get('/updateproduct/:id', section, function (req, res, next) {
         for (let ind in sta) {
           status.push(sta[ind]);
         }
-        res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+        res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai, sp: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
       });
     });
   });
@@ -338,7 +354,7 @@ router.get('/ViewDetailOSP/:id', sectionadmin, function (req, res, next) {
   Post.findById(req.params.id, function (err, docs) {
     var str = docs.Image.split(',');
     if (err) throw console.log(err);
-    User.findOne({ _id: docs.User_ID },async function (err, us) {
+    User.findOne({ _id: docs.User_ID }, async function (err, us) {
       if (err) throw console.log(err);
       var loai = [];
       var status = [];
@@ -424,6 +440,7 @@ router.get('/viewapproveuser/:id', sectionadmin, function (req, res, next) {
     });
   });
 });
+
 
 router.get('/thongke', sectionadmin, function (req, res) {
   let mang = [];

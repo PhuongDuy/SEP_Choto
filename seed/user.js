@@ -1,12 +1,12 @@
 var User = require("../models/User"),
     mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/SEPK21T1');
+mongoose.connect('mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5');
 
 var user = [
         new User({
             FullName : "Lý Thị Huyền Châu",
             Email : "chauly.sep.2018@gmail.com",
-            Password : "12345689",
+            Password : "$2a$10$0ENakeudPNZW6fHPDT4b.OvgDLwJCvSeATo9F6GPtjGsehTTw5AuS",
             Phone : "0123456789",
             Address : "45 Nguyễn Khắc Nhu, Quận 1, Tp Hồ Chí Minh",
             Brithday : "2000-10-25",
@@ -19,7 +19,7 @@ var user = [
         new User({
             FullName : "Hồ Thanh Phương Duy",
             Email : "duyho9@vanlanguni.vn",
-            Password : "123456789",
+            Password : "$2a$10$0ENakeudPNZW6fHPDT4b.OvgDLwJCvSeATo9F6GPtjGsehTTw5AuS",
             Phone : "0987654321",
             Address : "363F Phan Văn Trị, Phường 11, Quận Bình Thạnh, Tp Hồ Chí Minh",
             Brithday : "1997-1-21",
@@ -32,7 +32,7 @@ var user = [
         new User({
             FullName : "Phạm Đăng Khoa",
             Email : "phamdangkhoa0403@gmail.com",
-            Password : "123456789",
+            Password : "$2a$10$0ENakeudPNZW6fHPDT4b.OvgDLwJCvSeATo9F6GPtjGsehTTw5AuS",
             Phone : "0741258963",
             Address : "363F Phan Văn Trị, Phường 11, Quận Bình Thạnh, Tp Hồ Chí Minh",
             Brithday : "1997-5-5",
@@ -45,7 +45,7 @@ var user = [
         new User({
             FullName : "Nguyễn Tấn Ninh",
             Email : "nguyentanninh123@gmail.com",
-            Password : "123456789",
+            Password : "$2a$10$0ENakeudPNZW6fHPDT4b.OvgDLwJCvSeATo9F6GPtjGsehTTw5AuS",
             Phone : "0987654231",
             Address : "363F Phan Văn Trị, Phường 11, Quận Bình Thạnh, Tp Hồ Chí Minh",
             Brithday : "1997-5-21",

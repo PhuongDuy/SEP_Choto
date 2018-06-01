@@ -1,6 +1,6 @@
 var About = require("../models/About"),
     mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/SEPK21T1');
+mongoose.connect('mongodb://DuyHo:hothanhphuongduy@ds149479.mlab.com:49479/sep_team5');
 
 var about = [
     new About({

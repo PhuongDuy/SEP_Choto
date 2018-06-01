@@ -22,8 +22,11 @@
               </ol>
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
-                <% img.forEach(function(item){%>
                   <div class="item active">
+                      <img src="../frontend/images/<%= img[1]%>" style="widows: 360px;height: 300px;">
+                  </div>
+                <% img.forEach(function(item){%>
+                  <div class="item">
                     <img src="../frontend/images/<%= item%>" style="widows: 360px;height: 300px;">
                   </div>
                   <%})%>
