@@ -31,6 +31,10 @@ var storage = multer.diskStorage({
 
 var upload = multer({
   storage: storage,
+  limits: {
+    fileSize: 8 * 1024 * 1024,
+    files: 8,
+  },
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   }
@@ -79,7 +83,7 @@ router.get('/viewlistproject/:id', function (req, res, next) {
           return r;
         });
         if (err) throw console.log(err);
-        res.render('viewlistproject', { data: docs, ty: dos, user: req.user, sp: dos })
+        res.render('viewlistproject', { data: docs, ty: type, user: req.user, sp: dos })
       });
     });
   });
@@ -144,6 +148,8 @@ router.post('/post-product', section, upload.array("files", 8), function (req, r
   var add_post = new Post();
   add_post.ProductType_ID = req.body.Product_Type;
   add_post.ProductName = req.body.title;
+  add_post.Unit = req.body.Unit;
+  add_post.Quantity = req.body.quantity;
   add_post.User_ID = req.user._id;
   add_post.Price = req.body.price;
   add_post.Image = img.toString();
@@ -187,61 +193,77 @@ router.get('/viewdetail/:id', urlencodedParser, function (req, res) {
     Post.findById(req.params.id, function (err, docs) {
       var str = docs.Image.split(',');
       if (err) throw console.log(err);
-      User.findOne({ _id: docs.User_ID }, function (err, us) {
+      ProductType.findOne({ ID: docs.ProductType_ID }, function (err, type) {
         if (err) throw console.log(err);
-        res.render('viewdetail', { lipost: docs, seller: us, img: str, user: req.user, sp: sp });
+        User.findOne({ _id: docs.User_ID }, function (err, us) {
+          if (err) throw console.log(err);
+          res.render('viewdetail', { lipost: docs, seller: us, img: str, user: req.user, sp: sp, type: type });
+        });
       });
     });
   });
 });
 
-router.post('/sendmailseller', urlencodedParser, function (req, res) {
-  var yourname = req.body.yourname;
-  var youremail = req.body.youremail;
-  var numphone = req.body.numphone;
-  var message = req.body.message;
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'ppcrentalteam04@gmail.com',
-      pass: 'K21t1team04'
-    }
+router.post('/viewdetail/:id', urlencodedParser, function (req, res) {
+  Post.findById(req.params.id, function (err, docs) {
+    if (err) throw console.log(err);
+    User.findOne({ _id: docs.User_ID }, function (err, us) {
+      if (err) throw console.log(err);
+      var yourname = req.body.yourname;
+      var youremail = req.body.youremail;
+      var numphone = req.body.numphone;
+      var message = req.body.message;
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'ppcrentalteam04@gmail.com',
+          pass: 'K21t1team04'
+        }
+      });
+
+
+      var mailOptions = {
+        from: '"Hỗ trợ chợ tốt Văn Lang"<ppcrentalteam04@gmail.com>',
+        to: us.Email,
+        //pass:sep.team05.2018
+        subject: 'Hỗ trợ khách hàng',
+        text: 'Họ và tên: ' + yourname + ' Địa chỉ email: ' + youremail + ' Số điện thoại: ' + numphone + ' Nội dung:' + message
+      };
+
+      transporter.sendMail(mailOptions, function (err, inffo) {
+        if (err) {
+          console.log(err);
+          res.send('Thất bại');
+        } else {
+          res.render('index');
+        }
+      })
+    });
   });
-
-
-  var mailOptions = {
-    from: '"Hỗ trợ chợ tốt Văn Lang"<ppcrentalteam04@gmail.com>',
-    to: youremail,
-    //pass:sep.team05.2018
-    subject: 'Hỗ trợ khách hàng',
-    text: 'Họ và tên: ' + yourname + ' Địa chỉ email: ' + youremail + ' Số điện thoại: ' + numphone + ' Nội dung:' + message
-  };
-
-  transporter.sendMail(mailOptions, function (err, inffo) {
-    if (err) {
-      console.log(err);
-      res.send('Thất bại');
-    } else {
-      res.send('Bạn đã gửi liên hệ thành công ')
-    }
-  })
 });
 
-router.get('/postofuser', section, function (req, res, next) {
+
+router.get('/postofuser', section, function (req, res, next) { 
   let mang = [];
   let count = 0;
-  ProductType.find(function (err, sp) {
-    Post.find({ User_ID: req.user._id }, async function (err, docs) {
-      for (let i in docs) {
-        await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
-          count++;
-          if (err) throw console.log(err);
-          await mang.push(result.TypeName);
-          if (count === docs.length) {
-            res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
-          }
-        });
+    Post.find({ User_ID: req.user._id },  function (err, docs) {
+      if (err) throw console.log(err);
+      ProductType.find( function (err, sp) {
+      if(docs.length !== 0) {
+        for (let i in docs) {
+          ProductType.findOne({ ID: docs[i].ProductType_ID },  function (err, result) {
+           count++; 
+           if (err) throw console.log(err);
+            mang.push(result.TypeName);
+           if (count === docs.length) { 
+             console.log(docs);
+             res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
+             return;
+           }
+         });
+       }
       }
+      res.render('postofuser', { listpost: docs,tpy: mang, user: req.user, sp: sp });
     });
   });
 });
@@ -325,7 +347,7 @@ router.post('/mail', urlencodedParser, function (req, res) {
       console.log(err);
       res.send('Thất bại');
     } else {
-      res.send('Bạn đã gửi liên hệ thành công ')
+      res.render('index');
     }
   })
 });
@@ -478,7 +500,7 @@ function sectionadmin(req, res, next) {
   return res.redirect('/login-admin');
 }
 
-router.get('/logout', section, function (req, res, next) {
+router.get('/logout', section, sectionadmin, function (req, res, next) {
   req.logout();
   return res.redirect('/');
 });

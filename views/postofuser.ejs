@@ -23,29 +23,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% listpost.some(function(posts,i,_arr){%>
-                        <tr>
-                            <td>
-                                <%= posts.ProductName%>
-                            </td>
-                            <td>
-                                <%= posts.Price%>
-                            </td>
-                            <td>
-                                <%= tpy[i] %>
-                            </td>
-                            <td>
-                                <% if(posts.PostStatus_ID === "PS01") {%>
-                                <a  id="btn1" data-id="<%= posts._id%>" data-status="PS01" type="button" class="btn btn-success Hienthi">Hiển thị</a>
-                                <% } else {%>
-                                <a id="btn2" data-id="<%= posts._id%>" data-status="PS02" type="button" class="btn btn-danger An">Ẩn</a>
-                                <% } %>
-                            </td>
-                            <td>
-                                <a href="/updateproduct/<%= posts._id%>">Chỉnh sửa</a>
-                            </td>
-                        </tr>
+                    <% if (listpost !== null) { %>
+                        <% listpost.some(function(posts,i,_arr){%>
+                            <tr>
+                                <td>
+                                    <%= posts.ProductName%>
+                                </td>
+                                <td>
+                                    <%= posts.Price%>
+                                </td>
+                                <td>
+                                    <%= tpy[i] %>
+                                </td>
+                                <td>
+                                    <% if(posts.PostStatus_ID === "PS01") {%>
+                                        <a id="btn1" data-id="<%= posts._id%>" data-status="PS01" type="button" class="btn btn-success Hienthi">Hiển thị</a>
+                                        <% } else {%>
+                                            <a id="btn2" data-id="<%= posts._id%>" data-status="PS02" type="button" class="btn btn-danger An">Ẩn</a>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <a href="/updateproduct/<%= posts._id%>">Chỉnh sửa</a>
+                                </td>
+                            </tr>
                         <%});%>
+                    <% } else { %>
+                        <tr>
+
+                        </tr>
+                    <% } %>
+
                 </tbody>
             </table>
         </div>

@@ -66,111 +66,111 @@
                     <th>
                       Điện thoại & máy tính bảng
                     </th>
-                    <th>
+                    <th id="01">
                       <%= tpy['Điện thoại & máy tính bảng'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Máy ảnh
+                      Máy ảnh
                     </th>
-                    <th>
+                    <th id="02">
                       <%= tpy['Máy ảnh'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Máy tính
+                      Máy tính
                     </th>
-                    <th>
+                    <th id="03">
                       <%= tpy['Máy tính'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Sách
+                      Sách
                     </th>
-                    <th>
+                    <th id="04">
                       <%= tpy['Sách'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Xe máy
+                      Xe máy
                     </th>
-                    <th>
+                    <th id="05">
                       <%= tpy['Xe máy'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Tivi
+                      Tivi
                     </th>
-                    <th>
+                    <th id="06">
                       <%= tpy['Tivi'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Điện lạnh
+                      Điện lạnh
                     </th>
-                    <th>
+                    <th id="07">
                       <%= tpy['Điện lạnh'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Thời trang
+                      Thời trang
                     </th>
-                    <th>
+                    <th id="08">
                       <%= tpy['Thời trang'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Thiết bị âm thanh
+                      Thiết bị âm thanh
                     </th>
-                    <th>
+                    <th id="09">
                       <%= tpy['Thiết bị âm thanh'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Thực phẩm
+                      Thực phẩm
                     </th>
-                    <th>
+                    <th id="10">
                       <%= tpy['Thực phẩm'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Mỹ Phẩm & Làm Đẹp
+                      Mỹ Phẩm & Làm Đẹp
                     </th>
-                    <th>
+                    <th id="11">
                       <%= tpy['Mỹ Phẩm & Làm Đẹp'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Phiếu giảm giá
+                      Phiếu giảm giá
                     </th>
-                    <th>
+                    <th id="12">
                       <%= tpy['Phiếu giảm giá'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Nội thất
+                      Nội thất
                     </th>
-                    <th>
+                    <th id="13">
                       <%= tpy['Nội thất'] %>
                     </th>
                   </tr>
                   <tr>
                     <th>
-                        Đồ chơi trẻ em
+                      Đồ chơi trẻ em
                     </th>
-                    <th>
+                    <th id="14">
                       <%= tpy['Đồ chơi trẻ em'] %>
                     </th>
                   </tr>
@@ -178,6 +178,41 @@
                 </tbody>
 
               </table>
+              <hr>
+              <div class="row">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Bar graph
+                      <small>Sessions</small>
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li>
+                        <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                        </a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                          <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a href="#">Settings 1</a>
+                          </li>
+                          <li>
+                            <a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="myChart"></canvas>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
@@ -187,3 +222,54 @@
   <!-- /page content -->
 
   <%- include ./partials/footer1 %>
+  
+  <script src="../backend/vendors/jquery/dist/jquery.min.js"></script>
+  <script src="../backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../backend/vendors/fastclick/lib/fastclick.js"></script>
+  <script src="../backend/vendors/nprogress/nprogress.js"></script>
+  <script src="../backend/vendors/Chart.js/dist/Chart.min.js"></script>
+
+    <script type="text/javascript">
+      let t01 = document.getElementById("01").innerHTML;
+      let t02 = document.getElementById("02").innerHTML;
+      let t03 = document.getElementById("03").innerHTML;
+      let t04 = document.getElementById("04").innerHTML;
+      let t05 = document.getElementById("05").innerHTML;
+      let t06 = document.getElementById("06").innerHTML;
+      let t07 = document.getElementById("07").innerHTML;
+      let t08 = document.getElementById("08").innerHTML;
+      let t09 = document.getElementById("09").innerHTML;
+      let t10 = document.getElementById("10").innerHTML;
+      let t11 = document.getElementById("11").innerHTML;
+      let t12 = document.getElementById("12").innerHTML;
+      let t13 = document.getElementById("13").innerHTML;
+      let t14 = document.getElementById("14").innerHTML;
+      let ctx = document.getElementById("myChart").getContext('2d');
+      let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ["Điện thoại & máy tính bảng", "Máy ảnh","Máy tính", "Sách", "Xe máy","Tivi",
+            "Điện lạnh","Thời trang", "Thiết bị âm thanh","Thực phẩm", "Mỹ Phẩm & Làm Đẹp", "Phiếu giảm giá", "Nội thất","Đồ chơi trẻ em"],
+          datasets: [{
+            label: ' Quantity',
+            data: [t01, t02, t03, t04, t05, t06, t07, t08, t09, t10, t11, t12, t13, t14],
+            backgroundColor: [
+            '#2929a3','#00b3b3','#2929a3','#00b3b3','#2929a3','#00b3b3',
+            '#2929a3','#00b3b3','#2929a3','#00b3b3','#2929a3','#00b3b3',
+            '#2929a3','#00b3b3'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    </script>
+

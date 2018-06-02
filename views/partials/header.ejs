@@ -2,6 +2,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Cho Tot Van Lang</title>
+  <link rel="shortcut icon" href="../frontend/images/favicon.ico" type="image/x-icon">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -90,15 +91,15 @@
             </ul>
           </li>
           <li>
-            <a href="/about">Thông tin</a>
+            <a href="/about">Giới thiệu</a>
           </li>
           <li>
             <a href="/contact">Liên hệ</a>
           </li>
-          <li>
-            <a href="/post-product">Đăng tin mới</a>
-          </li>
           <% if(user) {%>
+          <li>
+            <a href="/post-product">Đăng tin</a>
+          </li>
             <li class="login">
               <a href="/postofuser"><%= user.Username %></a>
             </li>

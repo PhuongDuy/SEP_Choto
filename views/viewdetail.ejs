@@ -6,12 +6,18 @@
 
   <body>
     <div class="contact col-md-12">
-
     </div>
 
     <div style="background-color: #ebebeb">
       <div class="container" style="background-color: #ffffff">
         <div class="row detail">
+            <div class="main-breadcrumb col-sm-12">
+                <ol class="breadcrumb">
+                  <li><a href="/">Trang chủ</a></li>
+                  <li><a href="/viewlistproject/<%= type._id%>"><%= type.TypeName%></a></li>
+                  <li><%= lipost.ProductName %></li>
+                </ol>
+            </div>
           <div class="col-md-4">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
               <!-- Indicators -->
@@ -23,7 +29,7 @@
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
                   <div class="item active">
-                      <img src="../frontend/images/<%= img[1]%>" style="widows: 360px;height: 300px;">
+                      <img src="../frontend/images/<%= img[0]%>" style="widows: 360px;height: 300px;">
                   </div>
                 <% img.forEach(function(item){%>
                   <div class="item">
@@ -44,7 +50,7 @@
             </div>
             <br>
             <div class="contact-seller">
-              <form action="sendmailseller" method="POST">
+              <form action="/viewdetail/<%= lipost._id %>" method="POST">
                 <label>Liên hệ</label>
                 <p>
                   <%= seller.Fullname%>
@@ -59,9 +65,9 @@
                 <div class="sent-seller">
                   <label for="name">Họ và tên</label>
                   <input class="form-control" type="text" id="idname" name="yourname" placeholder="Your name....">
-                  <!-- <label for="email">Email</label>
-                  <input class="form-control" type="text" id="idemail" name="youremail" value="<%= seller.Email%>" placeholder="Your email..."> -->
-                  <label for="phone">Number phone</label>
+                  <label for="email">Email</label>
+                  <input class="form-control" type="text" id="idemail" name="youremail" placeholder="Your email...">
+                  <label for="phone">Số điện thoại</label>
                   <input class="form-control" type="text" id="idphone" name="numphone" placeholder="Number phone....">
                   <label for="message">Nội dung</label>
                   <textarea class="form-control" name="message" id="idmessage" cols="30" rows="4" placeholder="Message..."></textarea>
@@ -74,7 +80,7 @@
           <div class="col-md-8">
             <div class="content-product">
               <strong>
-                <%= lipost.ProductName%>
+                <h3><%= lipost.ProductName%></h3>
               </strong>
               <h2 style="color: red">
                 <%= lipost.Price%>
@@ -82,6 +88,7 @@
               </h2>
               <p>Đăng ngày: <%= lipost.Create_at.toLocaleDateString()%>
               </p>
+              <p>Sản phẩm có sẳn: <%= lipost.Quantity%> <%= lipost.Unit%> </p>
               <strong>
                 <p>
                   <%= lipost.Discription%>

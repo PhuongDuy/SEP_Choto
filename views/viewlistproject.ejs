@@ -5,30 +5,26 @@
 
 
 <body>
-  <div class="contact">
-    <div class="container">
-      <div class="row nav-search col-md-10">
-        <div class="col-md-3 col-sm-6 col-xs-12 nav-search-left">
-            
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 nav-search-right">
-
-        </div>
+    <div class="contact col-md-12">
       </div>
-    </div>
-  </div>
   <div class="container">
-    <div class="row">
+    <div class="row detail">
+        <div class="main-breadcrumb col-sm-12">
+            <ol class="breadcrumb">
+              <li><a href="/">Trang chủ</a></li>
+              <li><a href="/viewlistproject/<%= ty._id%>"><%= ty.TypeName%></a></li>
+            </ol>
+      </div>
       <% data.forEach(function(item){%>
-      <div class="col-xs-6 col-md-3">
+      <div class="col-xs-6 col-md-3" >
         <div class="thumbnail" style="margin-top: 20px">
           <!-- kích thước ảnh 171*180px -->
           <a href="/viewdetail/<%= item._id%>">
             <img src="../frontend/images/<%= item.Image %>" style="width: 360px;height: 200px;">
           </a>
           <div class="caption-a">
-            <h3><%=item.ProductName%></h3>
-            <p><%=item.Discription%></p>
+            <h4><%=item.ProductName.substring(0,20)%></h4>
+            <p><%=item.Discription.substring(0,30)%>...</p>
             <p style="color: #fb8004;font-size: 18px;display: block;font-weight: 600"><%= item.Price%>
               <sup>đ</sup></p>
             <p>
