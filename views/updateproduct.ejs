@@ -2,93 +2,102 @@
 
 <html>
 
-    <%- include ./partials/header%>
+<%- include ./partials/header%>
 
 
-<body>
-    <div class="container">
-        <form action="/updateproduct/<%= lipost._id %>" method="POST" enctype="multipart/form-data">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
-                <nav class="navbar navbar-default" role="navigation" style="border: 1px solid;margin : 0;background-color: #ffcc30">
-                    <div class="container-fluid">
-                        <p style="margin-bottom: 0;color: white;font-size: 20px">Thông tin bài đăng</p>
-                    </div>
-                </nav>
-                <div style="border: 1px solid;">
-                    <div style="padding: 10px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">Tên sản phẩm :</span>
-                            <input type="text" class="form-control" name="ProductName" value="<%= lipost.ProductName%>">
+    <body>
+        <div class="contact col-md-12">
+        </div>
+        <br>
+        <div class="container">
+            <form action="/updateproduct/<%= lipost._id %>" method="POST" enctype="multipart/form-data">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
+                    <nav class="navbar navbar-default" role="navigation" style="border: 1px solid;margin : 0;background-color: #ffcc30">
+                        <div class="container-fluid">
+                            <p style="margin-bottom: 0;color: white;font-size: 20px">Thông tin bài đăng</p>
                         </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Giá :</span>
-                            <input type="text" class="form-control" name="Price" value="<%= lipost.Price%>">
-                            <span class="input-group-addon">VNĐ</span>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Mô tả :</span>
-                            <textarea type="text" class="form-control" name="Discription"><%= lipost.Discription%></textarea>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Ngày tạo :</span>
-                            <input type="text" class="form-control" name="Create_at" value="<%= lipost.Create_at.toLocaleDateString()%>" disabled>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Loại sản phẩm :</span>
-                            <select class="form-control" id="ProductType_ID" name="ProductType_ID">
-                                <optgroup label="Danh mục">
-                                    <% for(let i in loai) {%>
-                                        <option value="<%= loai[i].ID %>" <%= (loai[i].ID == id) ? "selected" : "" %> ><%= loai[i].TypeName %></option>
-                                    <%}%>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Trạng thái :</span>
-                            <select class="form-control" id="PostStatus_ID" name="PostStatus_ID">
-                                <optgroup label="Danh mục">
-                                    <% for(let i in status) {%>
-                                        <option value="<%= status[i].ID %>" <%= (status[i].ID == idstatus) ? "selected" : "" %> ><%= status[i].StatusName %></option>
-                                    <%}%>
-                                </optgroup>
-                            </select>
+                    </nav>
+                    <div style="border: 1px solid;">
+                        <div style="padding: 10px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Tên sản phẩm :</span>
+                                <input type="text" class="form-control" name="ProductName" value="<%= lipost.ProductName%>">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Giá :</span>
+                                <input type="text" class="form-control" name="Price" value="<%= lipost.Price%>">
+                                <span class="input-group-addon">VNĐ</span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Mô tả :</span>
+                                <textarea type="text" class="form-control" name="Discription"><%= lipost.Discription%></textarea>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Ngày tạo :</span>
+                                <input type="text" class="form-control" name="Create_at" value="<%= lipost.Create_at.toLocaleDateString()%>" disabled>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Loại sản phẩm :</span>
+                                <select class="form-control" id="ProductType_ID" name="ProductType_ID">
+                                    <optgroup label="Danh mục">
+                                        <% for(let i in loai) {%>
+                                            <option value="<%= loai[i].ID %>" <%=( loai[i].ID==i d) ? "selected" : "" %> >
+                                                <%= loai[i].TypeName %>
+                                            </option>
+                                            <%}%>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Trạng thái :</span>
+                                <select class="form-control" id="PostStatus_ID" name="PostStatus_ID">
+                                    <optgroup label="Danh mục">
+                                        <% for(let i in status) {%>
+                                            <option value="<%= status[i].ID %>" <%=( status[i].ID==i dstatus) ? "selected" : "" %> >
+                                                <%= status[i].StatusName %>
+                                            </option>
+                                            <%}%>
+                                    </optgroup>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
-                <nav class="navbar navbar-default" role="navigation" style="border: 1px solid;margin : 0;background-color: #ffcc30">
-                    <div class="container-fluid">
-                        <p style="margin-bottom: 0;color: white;font-size: 20px">Hình ảnh bài đăng</p>
-                    </div>
-                </nav>
-                <div style="border: 1px solid;">
-                    <div style="padding: 10px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">Hình ảnh :</span>
-                            <input class="form-control" id="files" type="file" name="files" value="<%= lipost.Image%>" multiple="multiple">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
+                    <nav class="navbar navbar-default" role="navigation" style="border: 1px solid;margin : 0;background-color: #ffcc30">
+                        <div class="container-fluid">
+                            <p style="margin-bottom: 0;color: white;font-size: 20px">Hình ảnh bài đăng</p>
+                        </div>
+                    </nav>
+                    <div style="border: 1px solid;">
+                        <div style="padding: 10px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Hình ảnh :</span>
+                                <input class="form-control" id="files" type="file" name="files" value="<%= lipost.Image%>" multiple="multiple">
 
-                        <script type="text/javascript">
-                            jQuery(function ($) {
-                                $("#files").shieldUpload();
-                            });
-                        </script>
-                            <% img.forEach(function(item){%>
-                            <img style="width: 50px;height: 50px;" src="../frontend/images/<%= item%>">
-                            <%})%>
+                                <script type="text/javascript">
+                                    jQuery(function ($) {
+                                        $("#files").shieldUpload();
+                                    });
+                                </script>
+                                <% img.forEach(function(item){%>
+                                    <img style="width: 50px;height: 50px;" src="../frontend/images/<%= item%>">
+                                    <%})%>
+                            </div>
                         </div>
                     </div>
+                    <br>
+                    <a href="/postofuser">
+                        <input type="button" class="btn btn-danger" value="Quay lại">
+                    </a>
+                    <button class="btn btn-success" type="submit" name="Luu">Lưu</button>
                 </div>
-                <br>
-                <a href="/postofuser"><input type="button" class="btn btn-danger" value="Quay lại"></a>
-                <button class="btn btn-success" type="submit" name="Luu">Lưu</button>
-            </div>
-        </form>
-    </div>
-<br>
-</body>
+            </form>
+        </div>
+        <br>
+    </body>
 
 
     <%- include ./partials/footer %>
-    
+
 </html>
