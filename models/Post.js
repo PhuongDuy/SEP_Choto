@@ -31,7 +31,7 @@ var PostSchema = new mongoose.Schema({
     },
     Image: {
         type: String,
-        default: 'main.jpg'
+        default: "main.jpg"
     },
     Quantity: {
         type: Number

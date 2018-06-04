@@ -20,12 +20,20 @@ var passport = require('passport');
 /* GET home page. */
 
 //luuhinh
+var maxImg = [];
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/frontend/images')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    var imgArr = file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+    if ((maxImg.length) > 8) {
+      return cb('Hình quá số lượng cho phép');
+    }
+    else {
+      maxImg.push(imgArr);
+      cb(null, imgArr);
+    }
   }
 });
 
@@ -243,25 +251,24 @@ router.post('/viewdetail/:id', urlencodedParser, function (req, res) {
 });
 
 
-router.get('/postofuser', section, function (req, res, next) { 
+router.get('/postofuser', section, function (req, res, next) {
   let mang = [];
   let count = 0;
-    Post.find({ User_ID: req.user._id },  function (err, docs) {
+  ProductType.find( function (err, sp) {
+    Post.find({ User_ID: req.user._id }, async function (err, docs) {
       if (err) throw console.log(err);
-      ProductType.find( function (err, sp) {
-      if(docs.length !== 0) {
+      if (docs.length !== 0) {
         for (let i in docs) {
-          ProductType.findOne({ ID: docs[i].ProductType_ID },  function (err, result) {
-           count++; 
-           if (err) throw console.log(err);
-            mang.push(result.TypeName);
-           if (count === docs.length) { 
-             console.log(docs);
-             res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
-             return;
-           }
-         });
-       }
+          await ProductType.findOne({ ID: docs[i].ProductType_ID }, async function (err, result) {
+            count++;
+            if (err) throw console.log(err);
+            await mang.push(result.TypeName);
+            if (count === docs.length) {
+              res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
+              return;
+            }
+          });
+        }
       }
       res.render('postofuser', { listpost: docs,tpy: mang, user: req.user, sp: sp });
     });
@@ -271,30 +278,49 @@ router.get('/postofuser', section, function (req, res, next) {
 
 router.get('/updateproduct/:id', section, function (req, res, next) {
   Post.findById(req.params.id, async function (err, docs) {
-    var str = docs.Image.split(',');
-    if (err) throw console.log(err);
-    var loai = [];
-    var status = [];
-    await ProductType.find(async function (err, tr) {
+    if (docs.Image.length !== 0) {
+      var str = docs.Image.split(',');
       if (err) throw console.log(err);
-      for (let index in tr) {
-        loai.push(tr[index]);
-      }
-      await PostStatus.find(async function (err, sta) {
+      var loai = [];
+      var status = [];
+      await ProductType.find(async function (err, tr) {
         if (err) throw console.log(err);
-        for (let ind in sta) {
-          status.push(sta[ind]);
+        for (let index in tr) {
+          loai.push(tr[index]);
         }
-        res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai, sp: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+        await PostStatus.find(async function (err, sta) {
+          if (err) throw console.log(err);
+          for (let ind in sta) {
+            status.push(sta[ind]);
+          }
+          res.render('updateproduct', { lipost: docs, img: str, user: req.user, loai: loai, sp: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+        });
       });
-    });
+    } else {
+      if (err) throw console.log(err);
+      var loai = [];
+      var status = [];
+      await ProductType.find(async function (err, tr) {
+        if (err) throw console.log(err);
+        for (let index in tr) {
+          loai.push(tr[index]);
+        }
+        await PostStatus.find(async function (err, sta) {
+          if (err) throw console.log(err);
+          for (let ind in sta) {
+            status.push(sta[ind]);
+          }
+          res.render('updateproduct', { lipost: docs, user: req.user, loai: loai, sp: loai, status: status, id: docs.ProductType_ID, idstatus: docs.PostStatus_ID });
+        });
+      });
+    }
   });
 });
 
 router.post('/updateproduct/:id', section, upload.array("files", 8), function (req, res, next) {
-  let img = req.files.map(r => r.filename);
+
   var edit = {};
-  if (img.length === 0) {
+  if (maxImg.length === 0) {
     edit.ProductType_ID = req.body.ProductType_ID;
     edit.ProductName = req.body.ProductName;
     edit.Price = req.body.Price;
@@ -305,7 +331,7 @@ router.post('/updateproduct/:id', section, upload.array("files", 8), function (r
     edit.ProductType_ID = req.body.ProductType_ID;
     edit.ProductName = req.body.ProductName;
     edit.Price = req.body.Price;
-    edit.Image = img.toString();
+    edit.Image = maxImg.toString();
     edit.Discription = req.body.Discription;
     edit.PostStatus_ID = req.body.PostStatus_ID;
     console.log(edit);
