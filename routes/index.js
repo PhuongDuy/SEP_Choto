@@ -127,9 +127,6 @@ router.post('/login', passport.authenticate('login', {
   res.redirect('/messapprove');
 });
 
-router.get('/mail', function (req, res, next) {
-  res.render('mail');
-});
 
 router.get('/messapprove', section, function (req, res, next) {
   ProductType.find(function (err, docs) {
@@ -243,7 +240,19 @@ router.post('/viewdetail/:id', urlencodedParser, function (req, res) {
           console.log(err);
           res.send('Thất bại');
         } else {
-          res.render('index');
+          ProductType.find(function (err, sp) {
+            Post.findById(req.params.id, function (err, docs) {
+              var str = docs.Image.split(',');
+              if (err) throw console.log(err);
+              ProductType.findOne({ ID: docs.ProductType_ID }, function (err, type) {
+                if (err) throw console.log(err);
+                User.findOne({ _id: docs.User_ID }, function (err, us) {
+                  if (err) throw console.log(err);
+                  res.render('viewdetail', { lipost: docs, seller: us, img: str, user: req.user, sp: sp, type: type });
+                });
+              });
+            });
+          });
         }
       })
     });
@@ -346,7 +355,7 @@ router.post('/updateproduct/:id', section, upload.array("files", 8), function (r
   });
 });
 
-router.post('/mail', urlencodedParser, function (req, res) {
+router.post('/contact', urlencodedParser, function (req, res) {
 
   var yourname = req.body.yourname;
   var youremail = req.body.youremail;
@@ -373,7 +382,9 @@ router.post('/mail', urlencodedParser, function (req, res) {
       console.log(err);
       res.send('Thất bại');
     } else {
-      res.render('index');
+      ProductType.find(function (err, docs) {
+        res.render('contact', { user: req.user, sp: docs });
+      });
     }
   })
 });
