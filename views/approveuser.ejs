@@ -4,8 +4,8 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Users
-            <small>Some examples to get you started</small>
+          <h3>Admin
+            <small>Chào bạn đến với trang quản trị</small>
           </h3>
         </div>
 
@@ -56,12 +56,12 @@
               <table id="datatable" class="table table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>Tên</th>
                     <th>Email</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    <th>Approve</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>Trạng thái</th>
+                    <th>Công cụ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,7 @@
                         <%= asa %>
                       </th>
                       <th>
-                        <a class="btn btn-success" type="button" href="/viewapproveuser/<%= users._id %>">Duyệt</a>
+                        <a class="btn btn-primary" type="button" href="/viewapproveuser/<%=users._id %>">Duyệt</a>
                       </th>
                     </tr>
                     <%});%>

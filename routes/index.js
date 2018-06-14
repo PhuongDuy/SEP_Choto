@@ -493,7 +493,7 @@ router.put("/post-status-change/:id", sectionadmin, function (req, res, next) {
 router.get('/viewapproveuser/:id', sectionadmin, function (req, res, next) {
   UserStatus.findOne({ ID: "US02" }, function (err, statu) {
     if (err) throw console.log(err);
-    User.findOne({ Status_ID: statu.ID }, function (err, docs) {
+    User.findOne({ _id: req.params.id }, function (err, docs) {
       if (err) throw console.log(err);
       res.render('viewapproveuser', { seller: docs, asa: statu.StatusName, user: req.user });
     });
