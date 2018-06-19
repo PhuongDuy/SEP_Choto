@@ -27,7 +27,7 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     var imgArr = file.fieldname + "-" + Date.now() + path.extname(file.originalname);
-    if ((maxImg.length) > 8) {
+    if ((maxImg.length) > 9) {
       return cb('Hình quá số lượng cho phép');
     }
     else {
@@ -107,8 +107,13 @@ router.get('/contact', function (req, res, next) {
 
 
 router.get('/login', function (req, res, next) {
+  var messages = req.flash('error');
   ProductType.find(function (err, docs) {
-    res.render('login', { user: req.user, sp: docs });
+    res.render('login', { 
+      user: req.user,
+      sp: docs,
+      messages: messages,
+      hasErrors: messages.length > 0 });
   });
 });
 
@@ -148,24 +153,75 @@ router.get('/post-product', section, function (req, res, next) {
   });
 });
 
-router.post('/post-product', section, upload.array("files", 8), function (req, res, next) {
-  let img = req.files.map(r => r.filename);
-  var add_post = new Post();
-  add_post.ProductType_ID = req.body.Product_Type;
-  add_post.ProductName = req.body.title;
-  add_post.Unit = req.body.Unit;
-  add_post.Quantity = req.body.quantity;
-  add_post.User_ID = req.user._id;
-  add_post.Price = req.body.price;
-  add_post.Image = img.toString();
-  add_post.Discription = req.body.description;
-  add_post.save(function (err) {
+router.post('/post-product', section, function (req, res, next) {
+  upload.array("files")(req, res, function (err) {
     if (err) {
-      return new Error(err + "");
+      let loai = [];
+      ProductType.find((er, tr) => {
+        for (let index in tr) {
+          loai.push(tr[index]);
+        }
+        res.render('post-product', {
+          msg: "Lỗi: Số lượng hình ảnh vượt quá 8 ảnh!",
+          loai: loai,
+          user: req.user,
+          sp: loai
+        });
+      });
     } else {
-      return res.redirect('/');
+      let img = req.files.map(r => r.filename);
+      if (img.length === 0) {
+        var add_post = new Post();
+        add_post.ProductType_ID = req.body.Product_Type;
+        add_post.ProductName = req.body.title;
+        add_post.Unit = req.body.Unit;
+        add_post.Quantity = req.body.quantity;
+        add_post.User_ID = req.user._id;
+        add_post.Price = req.body.price;
+        add_post.Image = "main.jpg";
+        add_post.Discription = req.body.description;
+        add_post.save(function (err) {
+          if (err) {
+            return console.log(err);
+          } else {
+            return res.redirect('/');
+          }
+        });
+      } else {
+        if (img.length < 9) {
+          var add_post = new Post();
+          add_post.ProductType_ID = req.body.Product_Type;
+          add_post.ProductName = req.body.title;
+          add_post.Unit = req.body.Unit;
+          add_post.Quantity = req.body.quantity;
+          add_post.User_ID = req.user._id;
+          add_post.Price = req.body.price;
+          add_post.Image = img.toString();
+          add_post.Discription = req.body.description;
+          add_post.save(function (err) {
+            if (err) {
+              return console.log(err);
+            } else {
+              return res.redirect('/');
+            }
+          });
+        } else {
+          let loai = [];
+          ProductType.find((er, tr) => {
+            for (let index in tr) {
+              loai.push(tr[index]);
+            }
+            res.render('post-product', {
+              msg: "Lỗi: Số lượng hình ảnh vượt quá 8 ảnh!",
+              loai: loai,
+              user: req.user,
+              sp: loai
+            });
+          });
+        }
+      }
     }
-  });
+  })
 });
 
 router.get('/register', function (req, res) {
@@ -263,7 +319,7 @@ router.post('/viewdetail/:id', urlencodedParser, function (req, res) {
 router.get('/postofuser', section, function (req, res, next) {
   let mang = [];
   let count = 0;
-  ProductType.find( function (err, sp) {
+  ProductType.find(function (err, sp) {
     Post.find({ User_ID: req.user._id }, async function (err, docs) {
       if (err) throw console.log(err);
       if (docs.length !== 0) {
@@ -279,7 +335,7 @@ router.get('/postofuser', section, function (req, res, next) {
           });
         }
       }
-      res.render('postofuser', { listpost: docs,tpy: mang, user: req.user, sp: sp });
+      res.render('postofuser', { listpost: docs, tpy: mang, user: req.user, sp: sp });
     });
   });
 });

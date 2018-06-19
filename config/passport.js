@@ -14,13 +14,23 @@ var passport = require('passport'),
     });
     //login
     passport.use('login', new LocalStrategy({
-        usernameField: 'mail',
+        usernameField: 'Email',
         passwordField: 'password',
         passReqToCallback: true
-    }, function(req, Email, Password, done) {    
-        User.findOne({ Email: Email } , function(err, user) {
+    }, (req, Email, Password, done) => {  
+        req.checkBody('Email','Email không đúng').notEmpty().isEmail();
+        req.checkBody('password','Mật khẩu không đúng').notEmpty().isLength({min: 8});
+        var errors = req.validationErrors();
+        if(errors) {
+          var messages = [];
+          errors.forEach((error) => {
+            messages.push(error.msg);
+          });
+          return done(null, false, req.flash('error', messages));
+        }  
+        User.findOne({ Email: Email } , (err, user) => {
             console.log(user.validPassword(Password));
-            
+
             if (err) { return done(err); } 
             if (!user) {
                 return done(null, false, { message: 'Rất tiếc! Tài khoản không tồn tại' });
@@ -62,7 +72,7 @@ passport.use('register', new LocalStrategy({
     function (req, email, password, done) {
         req.checkBody('username', 'Họ tên không được trống (Tối thiểu 1 ký tự, tối đa 20 ký tự).').notEmpty().isLength({ min: 1, max: 20 }).trim();
         req.checkBody('email', 'Email không đúng').notEmpty().isEmail().trim();
-        req.checkBody('password', "Pass khong khop").notEmpty().isLength({ min: 8 }).equals(req.body.confirm); 
+        req.checkBody('password', "Pass không đúng").notEmpty().isLength({ min: 8 }).equals(req.body.confirm); 
         var error = req.validationErrors();
         if(error) {
             var message = [];

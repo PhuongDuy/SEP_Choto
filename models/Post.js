@@ -11,8 +11,7 @@ var PostSchema = new mongoose.Schema({
         type: String
     },
     Price: {
-        type: Number,
-        required: true
+        type: Number
     },
     User_ID: {
         type: String

@@ -15,7 +15,7 @@
                 <ol class="breadcrumb">
                   <li><a href="/">Trang chủ</a></li>
                   <li><a href="/viewlistproject/<%= type._id%>"><%= type.TypeName%></a></li>
-                  <li><%= lipost.ProductName %></li>
+                  <li><%= lipost.ProductName.substring(0,20)%>...</li>
                 </ol>
             </div>
           <div class="col-md-4">
@@ -89,11 +89,13 @@
               <p>Đăng ngày: <%= lipost.Create_at.toLocaleDateString()%>
               </p>
               <p>Sản phẩm có sẳn: <%= lipost.Quantity%> <%= lipost.Unit%> </p>
+              
               <strong>
                 <p>
-                  <%= lipost.Discription%>
+                  <%= lipost.Discription.substring(0,500)%>
                 </p>
               </strong>
+            
 
             </div>
             <hr>

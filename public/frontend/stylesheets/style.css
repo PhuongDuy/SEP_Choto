@@ -1947,7 +1947,7 @@ xkeyframes
 }
 
 .caption-style-2 li{
-    border-style: double;
+    border-style: ridge;
     margin: 3px;
     float: left;
     padding: 0px;
