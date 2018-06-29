@@ -173,13 +173,13 @@ router.post('/post-product', section, function (req, res, next) {
       if (img.length === 0) {
         var add_post = new Post();
         add_post.ProductType_ID = req.body.Product_Type;
-        add_post.ProductName = req.body.title;
+        add_post.ProductName = req.body.title.substring(0,50);
         add_post.Unit = req.body.Unit;
         add_post.Quantity = req.body.quantity;
         add_post.User_ID = req.user._id;
         add_post.Price = req.body.price;
         add_post.Image = "main.jpg";
-        add_post.Discription = req.body.description;
+        add_post.Discription = req.body.description.substring(0,500);
         add_post.save(function (err) {
           if (err) {
             return console.log(err);
@@ -191,13 +191,13 @@ router.post('/post-product', section, function (req, res, next) {
         if (img.length < 9) {
           var add_post = new Post();
           add_post.ProductType_ID = req.body.Product_Type;
-          add_post.ProductName = req.body.title;
+          add_post.ProductName = req.body.title.substring(0,50);
           add_post.Unit = req.body.Unit;
           add_post.Quantity = req.body.quantity;
           add_post.User_ID = req.user._id;
           add_post.Price = req.body.price;
           add_post.Image = img.toString();
-          add_post.Discription = req.body.description;
+          add_post.Discription = req.body.description.substring(0,500);
           add_post.save(function (err) {
             if (err) {
               return console.log(err);
