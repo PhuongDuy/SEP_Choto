@@ -125,21 +125,22 @@ router.post('/login', passport.authenticate('login', {
     let currentUrl = req.session.oldUrl;
     req.session.oldUrl = null;
     res.redirect(currentUrl);
-  } else
+  } else {
     if (req.user.Status_ID == 'US01') {
       res.redirect('/postofuser');
     }
+  }
   res.redirect('/messapprove');
 });
 
 
-router.get('/messapprove', section, function (req, res, next) {
+router.get('/messapprove', section, isNoPay, function (req, res, next) {
   ProductType.find(function (err, docs) {
     res.render('messapprove', { title: 'Chờ duyệt', user: req.user, sp: docs });
   });
 });
 
-router.get('/post-product', section, function (req, res, next) {
+router.get('/post-product', section, isPay, function (req, res, next) {
   let loai = [];
   ProductType.find((er, tr) => {
     for (let index in tr) {
@@ -153,7 +154,7 @@ router.get('/post-product', section, function (req, res, next) {
   });
 });
 
-router.post('/post-product', section, function (req, res, next) {
+router.post('/post-product', section, isPay, function (req, res, next) {
   upload.array("files")(req, res, function (err) {
     if (err) {
       let loai = [];
@@ -316,7 +317,7 @@ router.post('/viewdetail/:id', urlencodedParser, function (req, res) {
 });
 
 
-router.get('/postofuser', section, function (req, res, next) {
+router.get('/postofuser', section, isPay, function (req, res, next) {
   let mang = [];
   let count = 0;
   ProductType.find(function (err, sp) {
@@ -341,7 +342,7 @@ router.get('/postofuser', section, function (req, res, next) {
 });
 
 
-router.get('/updateproduct/:id', section, function (req, res, next) {
+router.get('/updateproduct/:id', section, isPay, function (req, res, next) {
   Post.findById(req.params.id, async function (err, docs) {
     if (docs.Image.length !== 0) {
       var str = docs.Image.split(',');
@@ -382,7 +383,7 @@ router.get('/updateproduct/:id', section, function (req, res, next) {
   });
 });
 
-router.post('/updateproduct/:id', section, upload.array("files", 8), function (req, res, next) {
+router.post('/updateproduct/:id', section, isPay, upload.array("files", 8), function (req, res, next) {
 
   var edit = {};
   if (maxImg.length === 0) {
@@ -599,11 +600,16 @@ router.get('/logout', section, sectionadmin, function (req, res, next) {
 });
 
 function isPay(req, res, next) {
-  if (req, user.Role === '0') {
-    if (req.user.Status === 'US01') {
+  if (req.user.Status_ID === "US01") {
+    return next();
+  }
+res.redirect('/postofuser');
+}
+
+function isNoPay(req, res, next) {
+    if (req.user.Status_ID === "US02") {
       return next();
     }
-  }
   res.redirect('/messapprove');
 }
 

@@ -2,6 +2,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Cho Tot Van Lang</title>
+  <link rel="shortcut icon" href="../frontend/images/favicon.ico" type="image/x-icon">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -76,34 +77,33 @@
 
         <ul class="nav navbar-nav navbar-right">
           <li class="active">
-            <a href="/">Trang chủ</a>
+            <a href="/logout">Trang chủ</a>
           </li>
-          <!-- <li class="dropdown">
+          <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               Sản phẩm
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-
+                <% sp.forEach(function(item){%>
+                  <li><a href="/viewlistproject/<%= item._id%>"><%= item.TypeName%></a></li>
+                <%})%>
             </ul>
-          </li> -->
-          <li>
-            <a href="#">Sản Phẩm</a>
           </li>
           <li>
-            <a href="/about">Thông tin</a>
+            <a href="/logout">Thông tin</a>
           </li>
           <li>
-            <a href="/contact">Liên hệ</a>
+            <a href="/logout">Liên hệ</a>
           </li>
-          <li>
+          <!-- <li>
             <a href="/post-product">Đăng tin mới</a>
+          </li> -->
+          <li class="login">
+            <a href="/logout">Đăng nhập</a>
           </li>
           <li class="login">
-            <a href="/login">Đăng nhập</a>
-          </li>
-          <li class="login">
-            <a href="/register">Đăng ký</a>
+            <a href="/logout">Đăng ký</a>
           </li>
         </ul>
 

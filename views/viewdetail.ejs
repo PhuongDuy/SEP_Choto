@@ -82,17 +82,21 @@
               <strong>
                 <h3><%= lipost.ProductName%></h3>
               </strong>
+              <% if (lipost.Price != null ) { %>
               <h2 style="color: red">
                 <%= lipost.Price%>
                   <sup>đ</sup>
               </h2>
-              <p>Đăng ngày: <%= lipost.Create_at.toLocaleDateString()%>
+              <% } else { %>
+                <p>Giá : ....... ( Liên hệ người bán để biết thêm về giá sản phẩm )</p>
+              <% } %>
+              <p>Đăng ngày : <%= lipost.Create_at.toLocaleDateString()%>
               </p>
-              <p>Sản phẩm có sẳn: <%= lipost.Quantity%> <%= lipost.Unit%> </p>
+              <p>Sản phẩm có sẳn : <%= lipost.Quantity%> <%= lipost.Unit%> </p>
               
               <strong>
                 <p>
-                  <%= lipost.Discription.substring(0,500)%>
+                  Chi tiết :  <%= lipost.Discription.substring(0,500)%>
                 </p>
               </strong>
             
